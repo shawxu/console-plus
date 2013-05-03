@@ -3,33 +3,33 @@
 		var EFN = function(){}
 			, APJ = Array.prototype.join
 			, proto = {
-				assert:				EFN
-				, clear:			EFN
-				, count:			EFN
-				, debug:			EFN
-				, dir:				EFN
-				, dirxml:			EFN
-				, error:			EFN
-				, group:			EFN
+				assert:			EFN
+				, clear:		EFN
+				, count:		EFN
+				, debug:		EFN
+				, dir:			EFN
+				, dirxml:		EFN
+				, error:		EFN
+				, group:		EFN
 				, groupCollapsed:	EFN
-				, groupEnd:			EFN
-				, info:				EFN
-				, log:				EFN
+				, groupEnd:		EFN
+				, info:			EFN
+				, log:			EFN
 				, markTimeline:		EFN
-				, profile:			EFN
+				, profile:		EFN
 				, profileEnd:		EFN
-				, time:				EFN
-				, timeEnd:			EFN
+				, time:			EFN
+				, timeEnd:		EFN
 				, timeStamp:		EFN
-				, trace:			EFN
-				, warn:				EFN
+				, trace:		EFN
+				, warn:			EFN
 			}
 			, LOG_MAP = {
-				debug:				'debug'
-				, error:			'error'
-				, info:				'info'
-				, log:				'log'
-				, warn:				'warn'
+				debug:			'debug'
+				, error:		'error'
+				, info:			'info'
+				, log:			'log'
+				, warn:			'warn'
 			}
 			, latencyType = 2 //magic number to resolve
 			, latencyMethod = function(){
