@@ -1,7 +1,5 @@
-if('function' != typeof define){
-	throw (new Error('no define function'));
-} else {
-	define('console.qzone.tencent.com', function(require, exports, module){
+('function' == typeof define) &&
+	define(function(require, exports, module){
 		var EFN = function(){}
 			, APJ = Array.prototype.join
 			, proto = {
@@ -91,5 +89,4 @@ if('function' != typeof define){
 
 		return proto;
 	});
-}
 
