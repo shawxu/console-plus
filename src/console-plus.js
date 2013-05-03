@@ -43,6 +43,13 @@
 				, '' //performanceNow
 				, '' //logMessage
 			]
+			, logStorage = {
+				debug:			[]
+				, error:		[]
+				, info:			[]
+				, log:			[]
+				, warn:			[]				
+			}
 			;
 		
 		latencyType = (window.performance && performance.now) ?
@@ -56,11 +63,14 @@
 		function consoleFactory(n){
 			if(LOG_MAP[n]){
 				return function(){
+					var t
+					;
 					logEntry[1] = n;
 					logEntry[latencyType] = latencyMethod();
 					logEntry[4] = APJ.call(arguments, ' ');
 
-					logEntries.push(logEntry.join('\t'));
+					logEntries.push(t = logEntry.join('\t'));
+					logStorage[n].push(t);
 					Function.prototype.call.call(console[n], console, logEntry[4]);
 					//console[n].call(console, logEntry[4]); //IE9不行，console.log之类的不是标准的Function类型，IE10,Chrome,FF之类都可以
 				};
@@ -83,8 +93,11 @@
 			}
 		}
 
-		proto.getLogEntriesText = function(){
-			return logEntries.join('\n');
+		proto.getLogEntriesText = function(filter){
+			var r
+			;
+			r = logStorage[filter] || logEntries;
+			return r.join('\n');
 		};
 
 		return proto;
