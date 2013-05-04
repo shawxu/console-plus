@@ -87,7 +87,7 @@
 			for(var k in proto){
 				console[k] && (proto[k] = consoleFactory(k));
 			}
-		} else {
+		} else { //这个分支要考虑处理挂载展现插件了
 			window.console = {}; //这里侵染 window 了...
 			for(var k in proto){
 				console[k] = EFN;
