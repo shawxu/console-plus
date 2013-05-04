@@ -1,64 +1,66 @@
 ('function' == typeof define) &&
 	define(function(require, exports, module){
 		var EFN = function(){}
-			, APJ = Array.prototype.join
-			, proto = {
-				assert:			EFN
-				, clear:		EFN
-				, count:		EFN
-				, debug:		EFN
-				, dir:			EFN
-				, dirxml:		EFN
-				, error:		EFN
-				, group:		EFN
-				, groupCollapsed:	EFN
-				, groupEnd:		EFN
-				, info:			EFN
-				, log:			EFN
-				, markTimeline:		EFN
-				, profile:		EFN
-				, profileEnd:		EFN
-				, time:			EFN
-				, timeEnd:		EFN
-				, timeStamp:		EFN
-				, trace:		EFN
-				, warn:			EFN
-			}
-			, LOG_MAP = {
-				debug:			'debug'
-				, error:		'error'
-				, info:			'info'
-				, log:			'log'
-				, warn:			'warn'
-			}
-			, latencyType = 2 //magic number to resolve
-			, latencyMethod = function(){
-				return (new Date()).valueOf();
-			}
-			, logEntries = []
-			, logEntry = [
-				'' //product name
-				, '' //logLevel
-				, '' //absTime
-				, '' //performanceNow
-				, '' //logMessage
-			]
-			, logStorage = {
-				debug:			[]
-				, error:		[]
-				, info:			[]
-				, log:			[]
-				, warn:			[]				
-			}
-			;
+		, APJ = Array.prototype.join
+		, LOG_MAP = {
+			debug:			'debug'
+			, error:		'error'
+			, info:			'info'
+			, log:			'log'
+			, warn:			'warn'
+		}
+		, LT_ABS_TIME = 2
+		, LT_PERFORMANCE_TIME = 3
+		, proto = {
+			assert:			EFN
+			, clear:		EFN
+			, count:		EFN
+			, debug:		EFN
+			, dir:			EFN
+			, dirxml:		EFN
+			, error:		EFN
+			, group:		EFN
+			, groupCollapsed:	EFN
+			, groupEnd:		EFN
+			, info:			EFN
+			, log:			EFN
+			, markTimeline:		EFN
+			, profile:		EFN
+			, profileEnd:		EFN
+			, time:			EFN
+			, timeEnd:		EFN
+			, timeStamp:		EFN
+			, trace:		EFN
+			, warn:			EFN
+		}
+		, latencyType = LT_ABS_TIME
+		, latencyMethod = function(){
+			return (new Date()).valueOf();
+		}
+		, logEntries = []
+		, logEntry = [
+			'' //product name
+			, '' //logLevel
+			, '' //absTime
+			, '' //performanceNow
+			, '' //logMessage
+		]
+		, logStorage = {
+			debug:			[]
+			, error:		[]
+			, info:			[]
+			, log:			[]
+			, warn:			[]				
+		}
+		;
 		
 		latencyType = (window.performance && performance.now) ?
-			(latencyMethod = function(){ return performance.now(); }, 3)
+			(latencyMethod = function(){ return performance.now(); }, LT_PERFORMANCE_TIME)
 				:
 			(Date.now ?
-				(latencyMethod = function(){ return Date.now(); }, 2)
+				(latencyMethod = function(){ return Date.now(); }, LT_ABS_TIME)
 					:
-				2); //magic numbers to resolve
+				LT_ABS_TIME);
 
 		function consoleFactory(n){
 			if(LOG_MAP[n]){
