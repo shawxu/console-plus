@@ -2,6 +2,7 @@
 	define(function(require, exports, module){
 		var EFN = function(){}
 		, APJ = Array.prototype.join
+		, CPC = Function.prototype.call
 		, LOG_MAP = {
 			debug:			'debug'
 			, error:		'error'
@@ -73,7 +74,7 @@
 
 					logEntries.push(t = logEntry.join('\t'));
 					logStorage[n].push(t);
-					Function.prototype.call.call(console[n], console, logEntry[4]);
+					CPC.call(console[n], console, logEntry[4]);
 					//console[n].call(console, logEntry[4]); //IE9不行，console.log之类的不是标准的Function类型，IE10,Chrome,FF之类都可以
 				};
 			} else {
@@ -82,8 +83,9 @@
 				};
 			}
 		}
-		
-		if(('object' == typeof window) && window.console){
+
+		//if(('object' == typeof window) && window.console){ //origin
+		if(window.console = void(0)){ //DEBUG
 			for(var k in proto){
 				console[k] && (proto[k] = consoleFactory(k));
 			}
@@ -93,6 +95,9 @@
 				console[k] = EFN;
 				LOG_MAP[k] && (proto[k] = consoleFactory(k));
 			}
+
+			/*require.async('./plugins/viewport', function(vp){
+				});*/
 		}
 
 		proto.getLogEntriesText = function(filter){
