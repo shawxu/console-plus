@@ -89,15 +89,19 @@
 			for(var k in proto){
 				console[k] && (proto[k] = consoleFactory(k));
 			}
-		} else {
-			window.console = {}; //这里侵染 window 了...
+		} else { //连console都不带的老旧浏览器
+			//这里先侵染 window 了，也不洁癖了，反正是老破浏览器
+			//就按最江湖的方式整好了
+			//由于module require async的异步性，一开始的一些log可以记在console-plus自己的存储里
+			//但是在viewport来之前，就无法对接到展现了，视觉上讲，是一种丢失
+			//就这样忍忍吧
+			window.console = {};
 			for(var k in proto){
 				console[k] = EFN;
 				LOG_MAP[k] && (proto[k] = consoleFactory(k));
 			}
 
-			/*require.async('./plugins/viewport', function(vp){
-				});*/
+			require.async('./plugins/viewport');
 		}
 
 		proto.getLogEntriesText = function(filter){
