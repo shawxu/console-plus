@@ -10,6 +10,8 @@
 	<div>
 		hello
 	</div>
+	<div id="cpvp_out">
+	</div>
 	<script type="text/javascript" src="http://ctc.qzonestyle.gtimg.cn//ac/lib/sea-1.3.1.js"></script>
 	<!--<script type="text/javascript" src="../src/console-plus.js"></script>-->
 	<script type="text/javascript">
@@ -18,22 +20,26 @@
 		seajs.use('../src/console-plus', function(a){
 				!window.QZONE && (window.QZONE = {}, QZONE.console = a);
 
-				QZONE.console.log('I\'m OK!');
-				QZONE.console.log('I\'m XX!');
-				QZONE.console.log('And U?');
-				QZONE.console.warn('hahahaha', '---------');
-				QZONE.console.info('sucks!', 'dsdsf', 'ssssssss');
-				QZONE.console.info('dddddddd!', 'neogeo', 'nintendo');
-				QZONE.console.info('Opss!', '?????');
-				QZONE.console.error('FT');
-				QZONE.console.debug('debug', 'xx');
 
-				console.log(QZONE.console.getLogEntriesText());
-				console.log(QZONE.console.getLogEntriesText('debug'));
-				console.log(QZONE.console.getLogEntriesText('info'));
-				console.log(QZONE.console.getLogEntriesText('log'));
+
+				setTimeout(function(){
+						QZONE.console.log('I\'m OK!');
+						QZONE.console.log('I\'m XX!');
+						QZONE.console.log('And U?');
+						QZONE.console.warn('hahahaha', '---------');
+						QZONE.console.info('sucks!', 'dsdsf', 'ssssssss');
+						QZONE.console.info('dddddddd!', 'neogeo', 'nintendo');
+						QZONE.console.info('Opss!', '?????');
+						QZONE.console.error('FT');
+						QZONE.console.debug('debug', 'xx');
+
+						console.log(QZONE.console.getLogEntriesText());
+						console.log(QZONE.console.getLogEntriesText('debug'));
+						console.log(QZONE.console.getLogEntriesText('info'));
+						console.log(QZONE.console.getLogEntriesText('log'));
+					}, 2000);
+
 			});
-
 
 
 
