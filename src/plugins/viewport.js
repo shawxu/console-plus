@@ -90,7 +90,7 @@
 					'position:absolute;top:3px;right:3px;'
 					, 'border:solid 1px gray;'
 					, 'width:52px;height:16px;'
-					, 'font-family:Consolas;text-decoration:none;font-size:12px;'
+					, 'font-family:Courier;text-decoration:none;font-size:12px;'
 					]).join('');
 				a.id = DOMID_ANCHOR;
 				a.innerHTML = 'Console';
@@ -114,7 +114,7 @@
 					, 'background-color:rgba(255,255,255,0.5);'
 					, 'visibility:hidden;'
 					, 'overflow:scroll;'
-					, 'font-family:Consolas;font-size:12px;'
+					, 'font-family:Courier;font-size:12px;'
 					]).join('');
 				d.id = DOMID_PANEL;
 				_doc.body.appendChild(d);
@@ -137,7 +137,7 @@
 				lb.style.cssText = ([
 					'position:absolute;top:0;right:17px;'
 					, 'width:45px;height:15px;'
-					, 'font-family:Consolas;text-decoration:none;font-size:12px;'
+					, 'font-family:Courier;text-decoration:none;font-size:12px;'
 					]).join('');
 				lb.innerHTML = 'clear';
 				lb.href = 'javascript:;';
