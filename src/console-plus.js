@@ -53,9 +53,11 @@
 			, log:			[]
 			, warn:			[]				
 		}
+		, _wnd = window
+		, _doc = document
 		;
 		
-		latencyType = (window.performance && performance.now) ?
+		latencyType = (_wnd.performance && performance.now) ?
 			(latencyMethod = function(){ return performance.now(); }, LT_PERFORMANCE_TIME)
 				:
 			(Date.now ?
@@ -84,8 +86,8 @@
 			}
 		}
 
-		//if(('object' == typeof window) && window.console){ //origin
-		if(window.console = void(0)){ //DEBUG
+		//if(('object' == typeof _wnd) && _wnd.console){ //origin
+		if(_wnd.console = void(0)){ //DEBUG
 			for(var k in proto){
 				console[k] && (proto[k] = consoleFactory(k));
 			}
@@ -95,13 +97,15 @@
 			//由于module require async的异步性，一开始的一些log可以记在console-plus自己的存储里
 			//但是在viewport来之前，就无法对接到展现了，视觉上讲，是一种丢失
 			//就这样忍忍吧
-			window.console = {};
+			_wnd.console = {};
 			for(var k in proto){
 				console[k] = EFN;
 				LOG_MAP[k] && (proto[k] = consoleFactory(k));
 			}
 
-			require.async('./plugins/viewport');
+			require.async('./plugins/viewport', function(vp){
+					vp.bootstrap();
+				});
 		}
 
 		proto.getLogEntriesText = function(filter){
