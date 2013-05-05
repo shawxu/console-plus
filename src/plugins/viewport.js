@@ -2,9 +2,17 @@
 	define(function(require, exports, module){
 		var DOMID_PANEL = '___cp_console_viewport_panel'
 		, DOMID_ANCHOR = '___cp_console_viewport_anchor'
-		, proto
+		, APJ = Array.prototype.join
+		, LOG_MAP = {
+			debug:			'<d> '
+			, error:		'<x> '
+			, info:			'<i> '
+			, log:			'<o> '
+			, warn:			'<!> '
+		}
 		, _wnd = window
 		, _doc = document
+		, refViewportPanelDomElem
 		;
 
 		function hideViewportWindow(evt){
@@ -72,11 +80,12 @@
 				d.style.cssText = ([
 					'position:absolute;top:3px;right:3px;'
 					, 'border:solid 1px gray;'
-					, 'width:600px;height:300px;margin:0;'
+					, 'width:720px;height:300px;margin:0;'
 					, 'filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);'
 					, '-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=50)";'
 					, 'background-color:rgba(255,255,255,0.5);'
 					, 'visibility:hidden;'
+					, 'overflow:scroll;'
 					]).join('');
 				d.id = DOMID_PANEL;
 				_doc.body.appendChild(d);
@@ -93,10 +102,31 @@
 				d.appendChild(cb);
 				addEvent(cb, 'click', hideViewportWindow);
 			}
+
+			refViewportPanelDomElem = d;
 		}
 
-		exports.bootstrap = function(allConsoleMethodMap, logConsoleMethodMap){
+		function createConsoleLogMethods(logConsoleMethodMap){
+			logConsoleMethodMap = logConsoleMethodMap || LOG_MAP;
+			if('object' == typeof logConsoleMethodMap){
+				for(var k in logConsoleMethodMap){
+					console[k] = consoleFactory(k);
+				}
+			}
+		}
+
+		function consoleFactory(n){
+			return function(){
+				var t
+				;
+				t = _doc.createTextNode(LOG_MAP[n] + APJ.call(arguments, ' ') + '\n');
+				refViewportPanelDomElem.appendChild(t);
+			};
+		}
+
+		exports.bootstrap = function(logConsoleMethodMap){
 				createViewportWindow();
+				createConsoleLogMethods(logConsoleMethodMap);
 			};
 	});
 

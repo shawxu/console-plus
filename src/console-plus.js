@@ -86,8 +86,8 @@
 			}
 		}
 
-		//if(('object' == typeof _wnd) && _wnd.console){ //origin
-		if(_wnd.console = void(0)){ //DEBUG
+		if(('object' == typeof _wnd) && _wnd.console){ //origin
+		//if(_wnd.console = void(0)){ //DEBUG
 			for(var k in proto){
 				console[k] && (proto[k] = consoleFactory(k));
 			}
@@ -104,7 +104,7 @@
 			}
 
 			require.async('./plugins/viewport', function(vp){
-					vp.bootstrap();
+					vp.bootstrap(LOG_MAP);
 				});
 		}
 
