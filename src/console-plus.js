@@ -12,7 +12,7 @@
 		}
 		, LT_ABS_TIME = 2
 		, LT_PERFORMANCE_TIME = 3
-		, proto = {
+		, proto = { //以chrome26的console method列表为准的方法列表，后续有可能增强除log体系外的其他方法
 			assert:			EFN
 			, clear:		EFN
 			, count:		EFN
@@ -90,7 +90,10 @@
 		if(('object' == typeof _wnd) && _wnd.console){ //origin
 		//if(_wnd.console = void(0)){ //DEBUG
 			for(var k in proto){
-				console[k] && (proto[k] = consoleFactory(k));
+				//这里会侵染原生console
+				//如果配置表里存在的方法原生console没有，这里会补空方法
+				!console[k] && (console[k] = EFN);
+				proto[k] = consoleFactory(k);
 			}
 		} else { //连console都不带的老旧浏览器
 			//这里先侵染 window 了，也不洁癖了，反正是老破浏览器
