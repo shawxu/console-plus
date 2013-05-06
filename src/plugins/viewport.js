@@ -70,7 +70,7 @@
 		function addEvent(elem, type, fn){
 			if(elem.addEventListener){
 				elem.addEventListener(type, fn, false);
-			} else if(cb.attachEvent){
+			} else if(elem.attachEvent){
 				elem.attachEvent('on' + type, fn);
 			}
 		}
@@ -162,7 +162,7 @@
 			return function(){
 				var t
 				;
-				t = _doc.createTextNode(LOG_MAP[n] + APJ.call(arguments, ' ') + '\n');
+				t = _doc.createTextNode(LOG_MAP[n] + APJ.call(arguments, ' ') + '\r\n');
 				refViewportPanelDomElem.appendChild(t);
 			};
 		}

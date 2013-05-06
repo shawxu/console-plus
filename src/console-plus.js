@@ -113,7 +113,7 @@
 			var r
 			;
 			r = logStorage[filter] || logEntries;
-			return r.join('\n');
+			return r.join('\r\n');
 		};
 
 		return proto;
