@@ -53,6 +53,7 @@
 			, log:			[]
 			, warn:			[]				
 		}
+		, reportUrl = 'http://i.qq.com/' //上报结果的接口URL，可配置
 		, _wnd = window
 		, _doc = document
 		;
@@ -117,6 +118,12 @@
 			;
 			r = logStorage[filter] || logEntries;
 			return r.join('\r\n');
+		};
+
+		proto.report = function(rurl, filter){
+			require.async('./plugins/report', function(rpt){
+					rpt.bootstrap(rurl || reportUrl, proto.getLogEntriesText(filter));
+				});
 		};
 
 		return proto;
