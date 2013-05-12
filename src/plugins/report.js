@@ -5,12 +5,14 @@
 		, reportUrl = 'http://i.qq.com/'
 		, _wnd = window
 		, _doc = document
+		, isIe = !!(_wnd.ActiveXObject || _wnd.msIsStaticHTML)
 		;
 
 		function preSend(fm, doc){
 			var t
 			, df = doc.createDocumentFragment()
 			;
+			
 			if(fm && fm.method){
 				for(var k in dataMap){
 					t = doc.createElement('input');
@@ -29,7 +31,7 @@
 
 		function send(){
 			var sf = _doc.createElement('iframe')
-			, sdHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8" /><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>postSender</title><script type="text/javascript">document.charset="utf-8";document.domain="' + _doc.domain +  '";<\/script></head><body><form method="post" accept-charset="utf-8" id="__cp_post_sender" enctype="application/x-www-form-urlencoded;charset=utf-8" action="javascript:;"></form><script type="text/javascript">if(window.frameElement&&window.frameElement.preSend){window.frameElement.preSend(document.getElementById("__cp_post_sender"),document);}<\/script></body></html>'
+			, sdHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8" /><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>postSender</title><script type="text/javascript">document.charset="utf-8";' + (_doc.domain ? ('document.domain="' + _doc.domain +  '";') : '') + '<\/script></head><body><form method="post" accept-charset="utf-8" id="__cp_post_sender" enctype="application/x-www-form-urlencoded;charset=utf-8" action="javascript:;"></form><script type="text/javascript">if(window.frameElement&&window.frameElement.preSend){window.frameElement.preSend(document.getElementById("__cp_post_sender"),document);}<\/script></body></html>'
 			, sdDoc
 			;
 
@@ -39,13 +41,19 @@
 			sf.src = 'javascript:;';
 			sf.preSend = preSend;
 
-			if(sdDoc = sf.contentDocument || sf.contentWindow.document){
-				sdDoc.open();
-				sdDoc.write(sdHtml);
-				sdDoc.close()
+
+			if(isIe){
+				sf.sdHtml = sdHtml;
+				sf.src = 'javascript:document.open();' + (_doc.domain ? ('document.domain="' + _doc.domain +  '";') : '') + 'var sdHtml=frameElement.sdHtml;document.write(sdHtml);document.close();';
 			} else {
-				throw (new Error('通信不能'));
+				try{
+					sdDoc = sf.contentDocument || sf.contentWindow.document;
+					sdDoc.open();
+					sdDoc.write(sdHtml);
+					sdDoc.close();
+				}catch(ign){}
 			}
+
 		}
 
 		exports.bootstrap = function(rUrl, logText){
