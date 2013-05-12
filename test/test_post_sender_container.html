@@ -22,12 +22,16 @@
 		<li><textarea id="ta_cont" class="cont"></textarea></li>
 		<li><button id="btn_submit">Send</button></li>
 	</ul>
-<script type="text/javascript" src="http://qzonestyle.gtimg.cn/ac/qzone/qzfl/qzfl_2.1.31.js"></script>
+<!-- <script type="text/javascript" src="http://qzonestyle.gtimg.cn/ac/qzone/qzfl/qzfl_2.1.31.js"></script> -->
 <script type="text/javascript">
 <!--
 (function(_wnd, _doc){
 	var btnSend = _doc.getElementById('btn_submit')
 	, txtCont = _doc.getElementById('ta_cont')
+	, DATA = {
+		'a': '你好',
+		'b': 'a=123&b=456'
+	}
 	;
 
 
@@ -43,13 +47,29 @@
 		}
 	}
 
-	function preSend(fm){
-		alert(fm.action);
+	function preSend(fm, doc){
+		var t
+		, df = doc.createDocumentFragment()
+		;
+		if(fm && fm.method){
+			for(var k in DATA){
+				t = doc.createElement('input');
+				t.type = 'hidden';
+				df.appendChild(t);
+				//fm.appendChild(t);
+				t.name = k;
+				t.value = DATA[k];
+			}
+		}
+
+		fm.appendChild(df);
+		fm.action = 'http://i.qq.com/';
+		fm.submit();
 	}
 
 	function send(evt){
 		var sf = _doc.createElement('iframe')
-		, sdHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8" /><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>postSender</title><script type="text/javascript">document.charset="utf-8";document.domain="' + _doc.domain +  '";<\/script></head><body><form method="post" id="__cp_post_sender" action="javascript:;"></form><script type="text/javascript">if(window.frameElement&&window.frameElement.preSend){window.frameElement.preSend(document.getElementById("__cp_post_sender"));}<\/script></body></html>'
+		, sdHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8" /><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>postSender</title><script type="text/javascript">document.charset="utf-8";document.domain="' + _doc.domain +  '";<\/script></head><body><form method="post" accept-charset="utf-8" id="__cp_post_sender" enctype="application/x-www-form-urlencoded;charset=utf-8" action="javascript:;"></form><script type="text/javascript">if(window.frameElement&&window.frameElement.preSend){window.frameElement.preSend(document.getElementById("__cp_post_sender"),document);}<\/script></body></html>'
 		, sdDoc
 		;
 
