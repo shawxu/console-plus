@@ -31,7 +31,8 @@
 
 		function send(){
 			var sf = _doc.createElement('iframe')
-			, sdHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8" /><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>postSender</title><script type="text/javascript">document.charset="utf-8";' + ((_doc.domain && _doc.domain != 'localhost') ? ('document.domain="' + _doc.domain +  '";') : '') + '<\/script></head><body><form method="post" accept-charset="utf-8" id="__cp_post_sender" enctype="application/x-www-form-urlencoded;charset=utf-8" action="javascript:;"></form><script type="text/javascript">if(window.frameElement&&window.frameElement.preSend){window.frameElement.preSend(document.getElementById("__cp_post_sender"),document);}<\/script></body></html>'
+			, dStr = (_doc.domain && _doc.domain != 'localhost') ? ('document.domain="' + _doc.domain +  '";') : ''
+			, sdHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8" /><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>postSender</title><script type="text/javascript">document.charset="utf-8";' + dStr + '<\/script></head><body><form method="post" accept-charset="utf-8" id="__cp_post_sender" enctype="application/x-www-form-urlencoded;charset=utf-8" action="javascript:;"></form><script type="text/javascript">if(window.frameElement&&window.frameElement.preSend){window.frameElement.preSend(document.getElementById("__cp_post_sender"),document);}<\/script></body></html>'
 			, sdDoc
 			;
 
@@ -44,7 +45,7 @@
 
 			if(isIe){
 				sf.sdHtml = sdHtml;
-				sf.src = 'javascript:document.open();' + ((_doc.domain && _doc.domain != 'localhost') ? ('document.domain="' + _doc.domain +  '";') : '') + 'var sdHtml=frameElement.sdHtml;document.write(sdHtml);document.close();';
+				sf.src = 'javascript:document.open();' + dStr + 'var sdHtml=frameElement.sdHtml;document.write(sdHtml);document.close();';
 			} else {
 				try{
 					sdDoc = sf.contentDocument || sf.contentWindow.document;
