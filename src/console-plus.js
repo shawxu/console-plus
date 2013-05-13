@@ -122,7 +122,22 @@
 
 		proto.report = function(rurl, filter){
 			require.async('./plugins/report', function(rpt){
-					rpt.bootstrap(rurl || reportUrl, proto.getLogEntriesText(filter));
+					var t
+					, buff = []
+					;
+
+					if(latencyType === LT_PERFORMANCE_TIME){
+						if(performance && (t = performance.timing)){
+							for(var k in t){
+								buff.push(k + '\t' + t[k]);
+							}
+						}
+					}
+
+					t = logStorage[filter] || logEntries;
+					buff = buff.concat(t);
+
+					rpt.bootstrap(rurl || reportUrl, buff.join('\r\n'));
 				});
 		};
 
