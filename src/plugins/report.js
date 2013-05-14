@@ -57,9 +57,29 @@
 
 		}
 
-		exports.bootstrap = function(rUrl, logText){
-				reportUrl = rUrl || reportUrl;
-				dataMap = { log: logText } || dataMap;
+		exports.bootstrap = function(opts){
+				opts = opts || {};
+				opts.logStorage = opts.logStorage || {};
+				opts.logEntries = opts.logEntries || [];
+
+				var t
+				, buff = []
+				;
+
+				if(_wnd.performance && (t = _wnd.performance.timing)){
+					for(var k in t){
+						buff.push(k + '\t' + t[k]);
+					}
+				}
+
+				t = opts.logStorage[opts.filter] || opts.logEntries;
+				buff = buff.concat(t);
+
+
+
+
+				reportUrl = opts.reportUrl || reportUrl;
+				dataMap = { log: buff.join('\r\n') };
 				
 				send();
 			};
