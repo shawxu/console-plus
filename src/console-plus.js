@@ -127,7 +127,7 @@
 						, 'logLevelFilter':	filter
 						, 'logStorage':		logStorage
 						, 'logEntries':		logEntries
-					//	, 'latencyType':	latencyType
+						, 'referConsolePlus':	proto
 					});
 				});
 		};

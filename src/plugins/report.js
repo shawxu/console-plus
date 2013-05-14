@@ -1,7 +1,9 @@
 ('function' == typeof define) &&
 	define(function(require, exports, module){
 		var APJ = Array.prototype.join
+		, DELAY = 1000
 		, dataMap = {}
+		, consolePlus = {}
 		, reportUrl = 'http://i.qq.com/'
 		, _wnd = window
 		, _doc = document
@@ -28,6 +30,24 @@
 			fm.submit();
 		}
 
+		function response(evt){
+			evt = evt || _wnd.event;
+			var sf = this
+			;
+
+			if(isIe){
+				if(sf.readyState != 'complete') return;
+			} else {
+				sf.onload = sf.onerror = null;
+			}
+			consolePlus.info && consolePlus.info('console-plus 完成上报(是否成功接收未知)');
+			sf.preSend = null;
+
+			setTimeout(function(){
+					sf.parentNode.removeChild(sf);
+				}, DELAY);
+		}
+
 
 		function send(){
 			var sf = _doc.createElement('iframe')
@@ -42,6 +62,11 @@
 			sf.src = 'about:blank';
 			sf.preSend = preSend;
 
+			isIe ? 
+				(sf.onreadystatechange = response)
+					:
+				(sf.onload = sf.onerror = response)
+			;
 
 			if(isIe){
 				sf.sdHtml = sdHtml;
@@ -80,6 +105,7 @@
 
 				reportUrl = opts.reportUrl || reportUrl;
 				dataMap = { log: buff.join('\r\n') };
+				consolePlus = opts.referConsolePlus || consolePlus;
 				
 				send();
 			};

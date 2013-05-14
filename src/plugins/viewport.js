@@ -64,7 +64,7 @@
 		}
 
 		function preventDefault(evt){
-			evt ? (evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false)) : 0;
+			(evt = evt || _wnd.event) ? (evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false)) : 0;
 		}
 
 		function addEvent(elem, type, fn){
