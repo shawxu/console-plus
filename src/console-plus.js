@@ -113,6 +113,13 @@
 				});
 		}
 
+		proto.config = function(opts){
+			opts = opts || {};
+			opts.productName && (logEntry[0] = opts.productName);
+
+			//TODO
+		};
+
 		proto.getLogEntriesText = function(filter){
 			var r
 			;

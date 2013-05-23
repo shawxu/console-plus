@@ -1,7 +1,6 @@
 ('function' == typeof define) &&
 	define(function(require, exports, module){
-		var APJ = Array.prototype.join
-		, DELAY = 1000
+		var DELAY = 1000
 		, dataMap = {}
 		, consolePlus = {}
 		, reportUrl = 'http://i.qq.com/'
