@@ -14,10 +14,12 @@
 	<script type="text/javascript">
 	<!--
 
-		seajs.use(['../src/console-plus', './example'], function(cp, test){
+		seajs.use(['../src/console-plus', './example'], function(cp, example){
 				!window.QZONE && (window.QZONE = {}, QZONE.console = cp);
 				cp.info('console plus loaded, bind to "QZONE.console"');
-				test.bootstrap();
+
+				//Your code...
+				example.bootstrap();
 			});
 
 
