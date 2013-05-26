@@ -1,3 +1,4 @@
+
 ('function' == typeof define) &&
 	define(function(require, exports, module){
 		var EFN = function(){}

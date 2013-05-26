@@ -1,3 +1,4 @@
+
 ('function' == typeof define) &&
 	define(function(require, exports, module){
 		var DOMID_PANEL = '___cp_console_viewport_panel'

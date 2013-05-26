@@ -39,6 +39,8 @@ define(function(retuire, exports, module){
 			t.onerror = response;
 			hd.appendChild(t);
 			t.src = 'http://r.qzone.qq.com/cgi-bin/user/qzone_msgtunnel_geoinfo';
+		} else {
+			QZONE.console.error('can not find HEAD Element');
 		}
 
 	}

@@ -1,9 +1,10 @@
+
 ('function' == typeof define) &&
 	define(function(require, exports, module){
 		var DELAY = 1000
 		, dataMap = {}
 		, consolePlus = {}
-		, reportUrl = 'http://i.qq.com/'
+		, reportUrl = 'http://i.qq.com/' //随便写个默认值...
 		, _wnd = window
 		, _doc = document
 		, isIe = !!(_wnd.ActiveXObject || _wnd.msIsStaticHTML)
