@@ -37,10 +37,23 @@ Log Format
 * 1370246230837 是`absolute time`字段
 * console plus loaded, bind to "QZONE.console" 是`log message`字段
 
+字段之间，用'\t'(一个或者两个)来分割
+
 对于支持`performance.now()`的浏览器，单条log是这样的
 > cpExample	info		3106.000000028871	console plus loaded, bind to "QZONE.console"
 
 可见，此时`absolute time`字段将被 3106.000000028871 这样的`performance now time`字段代替
+
+事实上，核心字段定义数据结构是如下的样子
+```javascript
+logEntry = [
+	''   //product name
+	, '' //log level
+	, '' //absolute time
+	, '' //performance now time
+	, '' //log message
+];
+```
 
 
 
