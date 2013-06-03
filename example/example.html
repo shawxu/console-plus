@@ -17,6 +17,9 @@
 
 		seajs.use(['../src/console-plus', './example'], function(cp, example){
 				!window.QZONE && (window.QZONE = {}, QZONE.console = cp);
+				cp.config({
+					productName: 'cpExample'
+				});
 				cp.info('console plus loaded, bind to "QZONE.console"');
 
 				//Your code...

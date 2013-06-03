@@ -41,7 +41,7 @@
 		}
 		, logEntries = []
 		, logEntry = [
-			'' //product name
+			'qzone' //product name
 			, '' //logLevel
 			, '' //absTime
 			, '' //performanceNow

@@ -9,7 +9,7 @@ define(function(retuire, exports, module){
 				QZONE.console.error('error load JSONP, script onerror');
 				t && (t.innerHTML = buff.join('Error!'));
 			} else {
-				QZONE.console.info('error load JSONP succeed');
+				QZONE.console.info('succ load JSONP succeed');
 				for(var k in oData){
 					buff.push(k + ' : ' + oData[k]);
 					QZONE.console.log('[', k, '] added to out stream');
@@ -46,6 +46,13 @@ define(function(retuire, exports, module){
 	}
 
 	exports.bootstrap = function(){
+		var DELAY = 3000
+		;
+
 		start2ShowWeather();
+
+		setTimeout(function(){
+			window.console && window.console.log(QZONE.console.getLogEntriesText());
+		}, DELAY);
 	};
 });
