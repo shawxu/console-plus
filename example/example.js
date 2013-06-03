@@ -52,7 +52,7 @@ define(function(retuire, exports, module){
 		start2ShowWeather();
 
 		setTimeout(function(){
-			window.console && window.console.log(QZONE.console.getLogEntriesText());
+			window.console && window.console.log('\n' + QZONE.console.getLogEntriesText());
 		}, DELAY);
 	};
 });
