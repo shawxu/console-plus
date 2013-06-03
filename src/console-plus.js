@@ -117,6 +117,7 @@
 		proto.config = function(opts){
 			opts = opts || {};
 			opts.productName && (logEntry[0] = opts.productName);
+			opts.reportUrl && (reportUrl = opts.reportUrl);
 
 			//TODO
 		};
