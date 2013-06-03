@@ -42,10 +42,10 @@
 		, logEntries = []
 		, logEntry = [
 			'qzone' //product name
-			, '' //logLevel
-			, '' //absTime
-			, '' //performanceNow
-			, '' //logMessage
+			, '' //log level
+			, '' //absolute time
+			, '' //performance now time
+			, '' //log message
 		]
 		, logStorage = {
 			debug:			[]
