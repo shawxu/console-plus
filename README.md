@@ -23,7 +23,7 @@ seajs.use(['../console-plus', './main'], function(cp, main){
 	main.bootstrap();
 });
 ```
-样例源代码见[这里](https://github.com/shawxu/console-plus/blob/master/example/example.html)
+样例源代码见[这里](https://github.com/shawxu/console-plus/tree/master/example)
 
 
 Log Format
