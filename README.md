@@ -28,3 +28,21 @@ seajs.use(['../console-plus', './main'], function(cp, main){
 
 Log Format
 ----------
+下面是一条普通的`console-plus log entry`记录文本(来自于上文的example的一条结果)
+> cpExample	info	1370246230837		console plus loaded, bind to "QZONE.console"
+
+其中
+* cpExample 是`product name`字段
+* info 是`log level`字段
+* 1370246230837 是`absolute time`字段
+* console plus loaded, bind to "QZONE.console" 是`log message`字段
+
+对于支持`performance.now()`的浏览器，单条log是这样的
+> cpExample	info		3106.000000028871	console plus loaded, bind to "QZONE.console"
+
+可见，此时`absolute time`字段将被 3106.000000028871 这样的`performance now time`字段代替
+
+
+
+
+
