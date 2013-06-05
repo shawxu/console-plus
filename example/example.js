@@ -54,5 +54,9 @@ define(function(retuire, exports, module){
 		setTimeout(function(){
 			window.console && window.console.log('\n' + QZONE.console.getLogEntriesText());
 		}, DELAY);
+
+		setTimeout(function(){
+			QZONE.console.report();
+		}, DELAY * 2);
 	};
 });

@@ -12,19 +12,23 @@
 		loading...
 	</div>
 	<script type="text/javascript" src="http://qzonestyle.gtimg.cn//ac/lib/sea-1.3.1.js"></script>
+	<!-- <script type="text/javascript" src="http://shawxu.github.io/res/js/require.js"></script> -->
 	<script type="text/javascript">
 	<!--
 
-		seajs.use(['../src/console-plus', './example'], function(cp, example){
-				!window.QZONE && (window.QZONE = {}, QZONE.console = cp);
-				cp.config({
-					productName: 'cpExample'
-				});
-				cp.info('console plus loaded, bind to "QZONE.console"');
+	//for this example ONLY
+	('undefined' == typeof window.require) && (window.require = window.seajs ? seajs.use : function(){});
 
-				//Your code...
-				example.bootstrap();
+	require(['../src/console-plus', './example'], function(cp, example){
+			!window.QZONE && (window.QZONE = {}, QZONE.console = cp);
+			cp.config({
+				productName: 'cpExample'
 			});
+			cp.info('console plus loaded, bind to "QZONE.console"');
+
+			//Your code...
+			example.bootstrap();
+		});
 
 
 	//-->

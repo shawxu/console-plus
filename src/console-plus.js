@@ -109,7 +109,7 @@
 				LOG_MAP[k] && (proto[k] = consoleFactory(k));
 			}
 
-			require.async('./plugins/viewport', function(vp){
+			(require.async || require)(['./plugins/viewport'], function(vp){
 					vp.bootstrap(LOG_MAP);
 				});
 		}
@@ -130,7 +130,7 @@
 		};
 
 		proto.report = function(rurl, filter){
-			require.async('./plugins/report', function(rpt){
+			(require.async || require)(['./plugins/report'], function(rpt){
 					rpt.bootstrap({
 						'reportUrl':		rurl || reportUrl
 						, 'logLevelFilter':	filter
