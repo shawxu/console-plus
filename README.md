@@ -4,7 +4,7 @@ console-plus
 
 Note
 ----
-依赖[Sea.js](https://github.com/seajs/seajs)
+依赖[Sea.js](https://github.com/seajs/seajs) 或 [RequireJS](https://github.com/jrburke/requirejs)
 
 What's it for?
 --------------
