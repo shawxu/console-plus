@@ -4,7 +4,7 @@ console-plus
 
 Note
 ----
-依赖[Sea.js](https://github.com/seajs/seajs) 或 [RequireJS](https://github.com/jrburke/requirejs)
+依赖 [Sea.js](https://github.com/seajs/seajs) 或 [RequireJS](https://github.com/jrburke/requirejs)
 
 What's it for?
 --------------
@@ -32,17 +32,17 @@ Log Format
 > cpExample	info	1370246230837		console plus loaded, bind to "QZONE.console"
 
 其中
-* cpExample 是`product name`字段
-* info 是`log level`字段
-* 1370246230837 是`absolute time`字段
-* console plus loaded, bind to "QZONE.console" 是`log message`字段
+* `cpExample` 是 product name 字段
+* `info` 是 log level 字段
+* `1370246230837` 是 absolute time 字段
+* `console plus loaded, bind to "QZONE.console"` 是 log message 字段
 
 字段之间，用'\t'(一个或者两个)来分割
 
 对于支持`performance.now()`的浏览器，单条log是这样的
 > cpExample	info		3106.000000028871	console plus loaded, bind to "QZONE.console"
 
-可见，此时`absolute time`字段将被 3106.000000028871 这样的`performance now time`字段代替
+可见，此时 absolute time 字段将被 `3106.000000028871` 这样的 performance now time 字段代替
 
 事实上，核心字段定义数据结构是如下的样子
 ```javascript
