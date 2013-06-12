@@ -122,7 +122,7 @@
 			//TODO
 		};
 
-		proto.getLogEntriesText = function(filter){
+		proto.get = function(filter){
 			var r
 			;
 			r = logStorage[filter] || logEntries;
