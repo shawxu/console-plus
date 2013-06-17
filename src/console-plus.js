@@ -129,14 +129,16 @@
 			return r.join('\r\n');
 		};
 
-		proto.report = function(rurl, filter){
+		proto.report = function(opts){
+			opts = opts || {};
 			(require.async || require)(['./plugins/report'], function(rpt){
 					rpt.bootstrap({
-						'reportUrl':		rurl || reportUrl
-						, 'logLevelFilter':	filter
-						, 'logStorage':		logStorage
-						, 'logEntries':		logEntries
-						, 'referConsolePlus':	proto
+						'reportUrl':	opts.reportUrl || reportUrl
+						, 'filter':	opts.filter
+						, 'extParams':	opts.params
+						, 'logStorage':	logStorage
+						, 'logEntries':	logEntries
+						, 'refer':	proto
 					});
 				});
 		};

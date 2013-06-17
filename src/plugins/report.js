@@ -100,12 +100,18 @@
 				t = opts.logStorage[opts.filter] || opts.logEntries;
 				buff = buff.concat(t);
 
-
-
-
 				reportUrl = opts.reportUrl || reportUrl;
+
 				dataMap = { log: buff.join('\r\n') };
-				consolePlus = opts.referConsolePlus || consolePlus;
+
+				if(t = opts.extParams){
+					for(var k in t){
+						if('log' === k.toLowerCase()) continue;
+						dataMap[k] = t[k];
+					}
+				}
+
+				consolePlus = opts.refer || consolePlus;
 				
 				send();
 			};
