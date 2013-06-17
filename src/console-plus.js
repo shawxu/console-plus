@@ -109,7 +109,7 @@
 				LOG_MAP[k] && (proto[k] = consoleFactory(k));
 			}
 
-			(require.async || require)(['./plugins/viewport'], function(vp){
+			(require.async || require)(['./components/viewport'], function(vp){
 					vp.bootstrap(LOG_MAP);
 				});
 		}
@@ -131,7 +131,7 @@
 
 		proto.report = function(opts){
 			opts = opts || {};
-			(require.async || require)(['./plugins/report'], function(rpt){
+			(require.async || require)(['./components/report'], function(rpt){
 					rpt.bootstrap({
 						'reportUrl':	opts.reportUrl || reportUrl
 						, 'filter':	opts.filter
