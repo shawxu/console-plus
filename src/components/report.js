@@ -69,6 +69,7 @@
 			;
 
 			if(isIe){
+				if(location.hostname === _doc.domain) _doc.domain = location.hostname; //fix form sender bug for IE
 				sf.sdHtml = sdHtml;
 				sf.src = 'javascript:document.open();' + dStr + 'var sdHtml=frameElement.sdHtml;document.write(sdHtml);document.close();';
 			} else {
