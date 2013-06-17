@@ -70,8 +70,7 @@
 
 			if(isIe){
 				sf.sdHtml = sdHtml;
-			//	sf.src = 'javascript:document.open();' + dStr + 'var sdHtml=frameElement.sdHtml;document.write(sdHtml);document.close();';
-				sf.src = 'javascript:document.open();document.write(\'' + sdHtml + '\');document.close();';
+				sf.src = 'javascript:document.open();' + dStr + 'var sdHtml=frameElement.sdHtml;document.write(sdHtml);document.close();';
 			} else {
 				try{
 					sdDoc = sf.contentDocument || sf.contentWindow.document;
