@@ -56,7 +56,7 @@ define(function(retuire, exports, module){
 		}, DELAY);
 
 		setTimeout(function(){
-			QZONE.console.report();
+			QZONE.console.report({ params: { huin: 95440569, label: 'xx的log' } });
 		}, DELAY * 2);
 	};
 });
