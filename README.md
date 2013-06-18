@@ -92,15 +92,17 @@ IE9 的运行效果图
 ### config ###
 
 ##### exports.config(opts) #####
-* @param {object} [opts]
-* @param {string} [opts.productName = 'qzone']
-* @param {string} [opts.reportUrl = 'http://i.qq.com/']
+`@param {object} [opts]`<br />
+`@param {string} [opts.productName = 'qzone']`<br />
+`@param {string} [opts.reportUrl = 'http://i.qq.com/']`
 
 
 
 ### get ###
 
 ##### exports.get(filter) #####
+`@param {string} [filter]`  log level过滤器，值域'log' | 'info' | 'debug' | 'warn' | 'error'
+
 
 ```javascript
 //console-plus exports to QZONE.console
