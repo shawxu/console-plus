@@ -104,7 +104,7 @@ QZONE.console.error('error in function', 'showOut()');
 QZONE.console.get();
 
 //return value: (string)
-//cpExample	log		28894.801999995252	response OK code 0 msg: succeed!
+//cpExample	log			28894.801999995252	response OK code 0 msg: succeed!
 //cpExample	info		28895.2169999975	enter function "main"
 //cpExample	debug		28895.513999996183	tag 1 time 2
 //cpExample	warn		28895.746999995026	param "opts" is undefined
