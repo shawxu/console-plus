@@ -60,6 +60,8 @@ Interfaces
 
 ### log ###
 
+记录一条log信息
+
 ```javascript
 //console-plus exports to QZONE.console
 QZONE.console.log('response OK', 'code 0', 'msg: succeed!');
@@ -73,6 +75,8 @@ IE9 的运行效果图
 
 
 ### info / debug / warn / error ###
+
+记录不同log等级的信息
 
 ```javascript
 //console-plus exports to QZONE.console
@@ -92,6 +96,9 @@ IE9 的运行效果图
 ### config ###
 
 ##### exports.config(opts) #####
+
+全局设置接口
+
 `@param {object} [opts]`<br />
 `@param {string} [opts.productName = 'qzone']`<br />
 `@param {string} [opts.reportUrl = 'http://i.qq.com/']`
@@ -106,6 +113,8 @@ cp.config({
 
 
 ### get ###
+
+获取存储在前端log队列中的信息
 
 ##### exports.get(filter) #####
 `@param {string} [filter]`  log level过滤器，值域'log' | 'info' | 'debug' | 'warn' | 'error'
@@ -136,6 +145,28 @@ QZONE.console.get('warn');
 //return value: (string)
 //cpExample	warn		28895.746999995026	param "opts" is undefined
 
+```
+
+
+
+### report ###
+
+##### exports.report(opts) #####
+
+上报错误到指定服务
+
+`@param {object} [opts]`<br />
+`@param {string} [opts.filter]`<br />
+`@param {string} [opts.reportUrl = 'http://i.qq.com/']`<br />
+`@param {object} [opts.params = {}]`
+
+
+```javascript
+//console-plus exports to cp
+cp.config({
+	productName: 'cpExample'
+	, reportUrl: 'http://w.qzone.qq.com/cgi-bin/user/report'
+});
 ```
 
 
