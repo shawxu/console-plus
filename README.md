@@ -55,6 +55,21 @@ logEntry = [
 ];
 ```
 
+Interfaces
+----------
+
+###log###
+
+```javascript
+//console-plus exports to QZONE.console
+
+QZONE.console.log('response OK', 'code 0', 'msg: succeed!');
+```
+console-plus的`log()`接口会在记录本条log到总体队列的同时，再调用浏览器原生`console.log()`
+
+IE9 的运行效果图
+
+![IE9运行效果](http://y.photo.qq.com/img?s=4oGLUb7TA&l=y.jpg)
 
 
 
