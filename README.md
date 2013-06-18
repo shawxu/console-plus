@@ -162,11 +162,18 @@ QZONE.console.get('warn');
 
 
 ```javascript
-//console-plus exports to cp
-cp.config({
-	productName: 'cpExample'
-	, reportUrl: 'http://w.qzone.qq.com/cgi-bin/user/report'
+//console-plus exports to QZONE.console
+
+QZONE.console.report({
+	params: {
+		uid: '1234567'
+		, label: 'xx\'s log'
+	}
+	, filter: 'error' 
 });
+
+//report HTTP POST request body:
+//log=......log...text......&uid=1234567&label=xx%27s+log
 ```
 
 
