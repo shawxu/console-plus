@@ -89,12 +89,25 @@ IE9 的运行效果图
 
 
 
+### config ###
+
+##### exports.config(opts) #####
+* @param {object} [opts]
+* @param {string} [opts.productName = 'qzone']
+* @param {string} [opts.reportUrl = 'http://i.qq.com/']
+
+
+
 ### get ###
 
 ##### exports.get(filter) #####
 
 ```javascript
 //console-plus exports to QZONE.console
+QZONE.console.config({
+	productName: 'cpExample'	
+});
+
 QZONE.console.log('response OK', 'code 0', 'msg: succeed!');
 QZONE.console.info('enter function "main"');
 QZONE.console.debug('tag 1', 'time 2');
@@ -116,4 +129,6 @@ QZONE.console.get('warn');
 //cpExample	warn		28895.746999995026	param "opts" is undefined
 
 ```
+
+
 
