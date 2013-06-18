@@ -89,4 +89,31 @@ IE9 的运行效果图
 
 
 
+### get ###
+
+##### exports.get(filter) #####
+
+```javascript
+//console-plus exports to QZONE.console
+QZONE.console.log('response OK', 'code 0', 'msg: succeed!');
+QZONE.console.info('enter function "main"');
+QZONE.console.debug('tag 1', 'time 2');
+QZONE.console.warn('param "opts" is undefined');
+QZONE.console.error('error in function', 'showOut()');
+
+QZONE.console.get();
+
+//return value: (string)
+//cpExample	log		28894.801999995252	response OK code 0 msg: succeed!
+//cpExample	info		28895.2169999975	enter function "main"
+//cpExample	debug		28895.513999996183	tag 1 time 2
+//cpExample	warn		28895.746999995026	param "opts" is undefined
+//cpExample	error		28895.951999998942	error in function showOut()
+
+QZONE.console.get('warn');
+
+//return value: (string)
+//cpExample	warn		28895.746999995026	param "opts" is undefined
+
+```
 
