@@ -58,11 +58,10 @@ logEntry = [
 Interfaces
 ----------
 
-###log###
+### log ###
 
 ```javascript
 //console-plus exports to QZONE.console
-
 QZONE.console.log('response OK', 'code 0', 'msg: succeed!');
 ```
 console-plus的`log()`接口会在记录本条log到总体队列的同时，再调用浏览器原生`console.log()`
@@ -70,6 +69,23 @@ console-plus的`log()`接口会在记录本条log到总体队列的同时，再�
 IE9 的运行效果图
 
 ![IE9运行效果](http://y.photo.qq.com/img?s=4oGLUb7TA&l=y.jpg)
+
+
+
+### info / debug / warn / error ###
+
+```javascript
+//console-plus exports to QZONE.console
+QZONE.console.info('enter function "main"');
+QZONE.console.debug('tag 1', 'time 2');
+QZONE.console.warn('param "opts" is undefined');
+QZONE.console.error('error in function', this.toString());
+```
+同`log()`接口，`info()` `debug()` `warn()` `error()` 都会写入log队列，并调用原生`console`的相应方法，只是体现不同的log level定义
+
+IE9 的运行效果图
+
+![IE9运行效果](http://y.photo.qq.com/img?s=o7gEP6QIS&l=y.jpg)
 
 
 
