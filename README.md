@@ -4,7 +4,7 @@ console-plus
 
 Note
 ----
-依赖 [Sea.js](https://github.com/seajs/seajs) 或 [RequireJS](https://github.com/jrburke/requirejs)
+同时支持 [Sea.js](https://github.com/seajs/seajs) 和 [RequireJS](https://github.com/jrburke/requirejs)
 
 What's it for?
 --------------
@@ -114,9 +114,10 @@ cp.config({
 
 ### get ###
 
+##### exports.get(filter) #####
+
 获取存储在前端log队列中的信息
 
-##### exports.get(filter) #####
 `@param {string} [filter]`  log level过滤器，值域'log' | 'info' | 'debug' | 'warn' | 'error'
 
 ```javascript
