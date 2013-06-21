@@ -2,7 +2,7 @@
 ('function' == typeof define) &&
 	define(function(require, exports, module){
 		var DOMID_PANEL = '___cp_console_viewport_panel'
-		, DOMID_ANCHOR = '___cp_console_viewport_anchor'
+	//	, DOMID_ANCHOR = '___cp_console_viewport_anchor'
 		, APJ = Array.prototype.join
 		, LOG_MAP = {
 			debug:			'd> '
@@ -11,6 +11,7 @@
 			, log:			'o> '
 			, warn:			'!> '
 		}
+		, KEY_CODE_C = 67
 		, _wnd = window
 		, _doc = document
 		, refViewportPanelDomElem
@@ -18,24 +19,28 @@
 
 		function hideViewportWindow(evt){
 			var d = _doc.getElementById(DOMID_PANEL)
-			, a = _doc.getElementById(DOMID_ANCHOR)
+		//	, a = _doc.getElementById(DOMID_ANCHOR)
 			;
 
 			d && (d.style.visibility = 'hidden');
-			a && (a.style.visibility = 'visible');
+		//	a && (a.style.visibility = 'visible');
 
 			preventDefault(evt);
 		}
 
 		function showViewportWindow(evt){
 			var d = _doc.getElementById(DOMID_PANEL)
-			, a = _doc.getElementById(DOMID_ANCHOR)
+		//	, a = _doc.getElementById(DOMID_ANCHOR)
 			;
 
 			d && (d.style.visibility = 'visible');
-			a && (a.style.visibility = 'hidden');
+		//	a && (a.style.visibility = 'hidden');
 
 			preventDefault(evt);
+		}
+
+		function showByShortcutKey(evt){
+			(evt = evt || _wnd.event) && evt.altKey && evt.ctrlKey && (evt.keyCode === KEY_CODE_C) && showViewportWindow();
 		}
 
 		function clearViewportWindow(evt){
@@ -76,6 +81,8 @@
 			}
 		}
 
+		addEvent(_doc, 'keydown', showByShortcutKey); //ctrl + alt + C to show
+
 		function createViewportWindow(){
 			var d
 			, a
@@ -83,23 +90,23 @@
 			, lb
 			;
 
-			if(a = _doc.getElementById(DOMID_ANCHOR)){
+		/*	if(a = _doc.getElementById(DOMID_ANCHOR)){
 				//存在就不干了
 			} else {
 				a = _doc.createElement('a');
 				a.style.cssText = ([
 					'position:absolute;top:3px;right:3px;'
-					, 'border:solid 1px gray;'
-					, 'width:52px;height:16px;'
-					, 'font-family:Courier;text-decoration:none;font-size:12px;'
+					, 'width:26px;height:8px;z-index:65000;'
+					, 'font-family:Courier;text-decoration:none;font-size:12px;color:#ddd;'
 					]).join('');
 				a.id = DOMID_ANCHOR;
-				a.innerHTML = 'Console';
+				a.innerHTML = '...';
 				a.href = 'javascript:;';
 				a.title = 'Click to open console panel';
 				_doc.body.appendChild(a);
 				addEvent(a, 'click', showViewportWindow);
 			}
+			*/
 
 			if(d = _doc.getElementById(DOMID_PANEL)){
 				//存在就不干了
@@ -125,7 +132,7 @@
 				cb.style.cssText = ([
 					'position:absolute;top:0;right:0;'
 					, 'width:15px;height:15px;'
-					, 'font-family:verdana;text-decoration:none;'
+					, 'font-family:verdana;text-decoration:none;color:#aaa;'
 					]).join('');
 				cb.innerHTML = '×';
 				cb.href = 'javascript:;';
@@ -138,7 +145,7 @@
 				lb.style.cssText = ([
 					'position:absolute;top:0;right:17px;'
 					, 'width:45px;height:15px;'
-					, 'font-family:Courier;text-decoration:none;font-size:12px;'
+					, 'font-family:Courier;text-decoration:none;font-size:12px;color:#aaa;'
 					]).join('');
 				lb.innerHTML = 'clear';
 				lb.href = 'javascript:;';
