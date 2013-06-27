@@ -92,9 +92,11 @@
 				, buff = []
 				;
 
+				buff.push(navigator.userAgent);
+
 				if(_wnd.performance && (t = _wnd.performance.timing)){
 					for(var k in t){
-						buff.push(k + '\t' + t[k]);
+						buff.push(k + '\t\t' + t[k]);
 					}
 				}
 
