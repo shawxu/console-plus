@@ -40,7 +40,7 @@
 			} else {
 				sf.onload = sf.onerror = null;
 			}
-			consolePlus.info && consolePlus.info('console-plus 完成上报(是否成功接收未知)');
+			consolePlus.info && consolePlus.info('console-plus report posted');
 			sf.preSend = null;
 
 			setTimeout(function(){
