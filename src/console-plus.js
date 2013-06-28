@@ -13,6 +13,7 @@
 		}
 		, LT_ABS_TIME = 2
 		, LT_PERFORMANCE_TIME = 3
+		, SAY_HI = 'console-plus loaded, hello world!'
 		, proto = { //以chrome26的console method列表为准的方法列表，后续有可能增强除log体系外的其他方法
 			assert:			EFN
 			, clear:		EFN
@@ -41,7 +42,7 @@
 		}
 		, logEntries = []
 		, logEntry = [
-			'qzone' //product name
+			'console-plus' //product name
 			, '' //log level
 			, '' //absolute time
 			, '' //performance now time
@@ -142,6 +143,8 @@
 					});
 				});
 		};
+
+		proto.info(SAY_HI);
 
 		return proto;
 	});
