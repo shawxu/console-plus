@@ -4,6 +4,7 @@
 		var EFN = function(){}
 		, APJ = Array.prototype.join
 		, CPC = Function.prototype.call
+		, CPA = Function.prototype.apply
 		, LOG_MAP = {
 			debug:			'debug'
 			, error:		'error'
@@ -85,7 +86,7 @@
 				};
 			} else {
 				return function(){
-					console[n].apply(console, arguments);
+					CPA.call(console[n], console, arguments);
 				};
 			}
 		}
