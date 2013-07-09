@@ -111,7 +111,8 @@
 				LOG_MAP[k] && (proto[k] = consoleFactory(k));
 			}
 
-			(require.async || require)(['./components/viewport'], function(vp){
+			//低版本IE才拉，用window.console无法完全判断没有console，这里单独判断IE6/7才拉
+			(_doc && _wnd && _wnd.ActiveXObject && !_doc.documentMode) && (require.async || require)(['./components/viewport'], function(vp){
 					vp.bootstrap(LOG_MAP);
 				});
 		}
