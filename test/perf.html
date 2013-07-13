@@ -26,14 +26,16 @@
 			, t1
 			;
 
-			for(var i = 0; i < 100000; ++i){
+			for(var i = 0; i < 5000; ++i){
 				cp.log('console-plus log:', i);
 			}
 
 			t1 = new Date();
 
 			document.getElementById('txt_out').innerHTML = t1 - t0;
+			cp.clear();
 
+			cp.clear(1);
 		});
 
 
