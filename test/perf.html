@@ -16,20 +16,24 @@
 	<script type="text/javascript">
 	<!--
 
-//	window.console = null;
 
-	//for this example ONLY
 	('undefined' == typeof window.require) && (window.require = window.seajs ? seajs.use : function(){});
 
-	require(['../src/console-plus', './example'], function(cp, example){
+	require(['../src/console-plus'], function(cp){
 			!window.QZONE && (window.QZONE = {}, QZONE.console = cp);
-			cp.config({
-				productName: 'cpExample'
-			});
-			cp.info('console plus loaded, bind to "QZONE.console"');
 
-			//Your code...
-			example.bootstrap();
+			var t0 = new Date()
+			, t1
+			;
+
+			for(var i = 0; i < 100000; ++i){
+				cp.log('console-plus log:', i);
+			}
+
+			t1 = new Date();
+
+			document.getElementById('txt_out').innerHTML = t1 - t0;
+
 		});
 
 
