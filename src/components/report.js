@@ -30,7 +30,7 @@
 			fm.submit();
 		}
 
-		function response(evt){
+		function response(evt, opts){
 			evt = evt || _wnd.event;
 			var sf = this
 			;
@@ -40,20 +40,23 @@
 			} else {
 				sf.onload = sf.onerror = null;
 			}
-			consolePlus.info && consolePlus.info('console-plus report posted');
-			sf.preSend = null;
 
+			consolePlus.info && consolePlus.info('console-plus report posted');
+			opts.clear && consolePlus.clear && consolePlus.clear();
+
+			sf.preSend = null;
 			setTimeout(function(){
 					sf.parentNode.removeChild(sf);
 				}, DELAY);
 		}
 
 
-		function send(){
+		function send(opts){
 			var sf = _doc.createElement('iframe')
 			, dStr = (_doc.domain && _doc.domain != 'localhost') ? ('document.domain="' + _doc.domain +  '";') : ''
 			, sdHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8" /><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>postSender</title><script type="text/javascript">document.charset="utf-8";' + dStr + '<\/script></head><body><form method="post" accept-charset="utf-8" id="__cp_post_sender" enctype="application/x-www-form-urlencoded;charset=utf-8" action="javascript:;"></form><script type="text/javascript">if(window.frameElement&&window.frameElement.preSend){window.frameElement.preSend(document.getElementById("__cp_post_sender"),document);}<\/script></body></html>'
 			, sdDoc
+			, evtHandler
 			;
 
 			sf.style.cssText = 'width:1px;height:0;display:none;';
@@ -62,22 +65,32 @@
 			sf.src = 'about:blank';
 			sf.preSend = preSend;
 
+			evtHandler = (function(op){
+					return function(ev){
+						response.call(sf, ev, op);
+					};
+				})(opts);
+
 			isIe ? 
-				(sf.onreadystatechange = response)
+				(sf.onreadystatechange = evtHandler)
 					:
-				(sf.onload = sf.onerror = response)
+				(sf.onload = sf.onerror = evtHandler)
 			;
 
 			if(isIe){
 				if(location.hostname && location.hostname === _doc.domain) _doc.domain = location.hostname; //fix form sender bug for IE
 				sf.sdHtml = sdHtml;
 				sf.src = 'javascript:document.open();' + dStr + 'var sdHtml=frameElement.sdHtml;document.write(sdHtml);document.close();';
+
+			//	opts.clear && consolePlus.clear && consolePlus.clear();
 			} else {
 				try{
 					sdDoc = sf.contentDocument || sf.contentWindow.document;
 					sdDoc.open();
 					sdDoc.write(sdHtml);
 					sdDoc.close();
+
+				//	opts.clear && consolePlus.clear && consolePlus.clear();
 				}catch(ign){}
 			}
 
@@ -116,7 +129,7 @@
 
 				consolePlus = opts.refer || consolePlus;
 				
-				send();
+				send(opts);
 			};
 	});
 

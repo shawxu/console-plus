@@ -56,6 +56,7 @@
 			, log:			[]
 			, warn:			[]				
 		}
+		, clearTimes = 0
 		, reportUrl = 'http://i.qq.com/' //上报结果的接口URL，可配置
 		, _wnd = window
 		, _doc = document
@@ -132,6 +133,17 @@
 			return r.join('\r\n');
 		};
 
+		proto.clear = function(clearConsole){
+			logEntries = [];
+			for(var k in logStorage){
+				logStorage[k] = [];
+			}
+
+			clearConsole && _wnd.console && _wnd.console.clear && _wnd.console.clear();
+
+			proto.info('console-plus cleared, ', ++clearTimes, 'times');
+		};
+
 		proto.report = function(opts){
 			opts = opts || {};
 			(require.async || require)(['./components/report'], function(rpt){
@@ -139,6 +151,7 @@
 						'reportUrl':	opts.reportUrl || reportUrl
 						, 'filter':	opts.filter
 						, 'extParams':	opts.params
+						, 'clear':	'undefined' == typeof opts.clear ? true : opts.clear
 						, 'logStorage':	logStorage
 						, 'logEntries':	logEntries
 						, 'refer':	proto
