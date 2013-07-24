@@ -156,10 +156,11 @@ QZONE.console.get('warn');
 
 上报错误到指定服务
 
-`@param {object} [opts]`<br />
-`@param {string} [opts.filter]`<br />
-`@param {string} [opts.reportUrl = 'http://i.qq.com/']`<br />
-`@param {object} [opts.params = {}]`
+`@param {object}  [opts]`<br />
+`@param {string}  [opts.filter]`<br />
+`@param {string}  [opts.reportUrl = 'http://i.qq.com/']`<br />
+`@param {object}  [opts.params = {}]`<br />
+`@param {boolean} [opts.clear = true] 是否清理存储中的log记录`
 
 
 ```javascript
@@ -177,5 +178,23 @@ QZONE.console.report({
 //log=......log...text......&uid=1234567&label=xx%27s+log
 ```
 
+
+
+
+### clear ###
+
+##### exports.clear(clearConsole) #####
+
+清理存储中的所有log记录
+
+`@param {boolean} [clearConsole = false] 是否同时清理console面板中的内容`
+
+
+```javascript
+//console-plus exports to QZONE.console
+
+QZONE.console.clear(true);
+
+```
 
 
