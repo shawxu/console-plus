@@ -6,36 +6,36 @@
 		, CPC = Function.prototype.call
 		, CPA = Function.prototype.apply
 		, LOG_MAP = {
-			debug:			'debug'
-			, error:		'error'
-			, info:			'info'
-			, log:			'log'
-			, warn:			'warn'
+			debug  : 'debug'
+			, error: 'error'
+			, info : 'info'
+			, log  : 'log'
+			, warn : 'warn'
 		}
 		, LT_ABS_TIME = 2
 		, LT_PERFORMANCE_TIME = 3
 		, SAY_HI = 'console-plus loaded, hello world!'
 		, proto = { //以chrome26的console method列表为准的方法列表，后续有可能增强除log体系外的其他方法
-			assert:			EFN
-			, clear:		EFN
-			, count:		EFN
-			, debug:		EFN
-			, dir:			EFN
-			, dirxml:		EFN
-			, error:		EFN
-			, group:		EFN
+			assert:				EFN
+			, clear:			EFN
+			, count:			EFN
+			, debug:			EFN
+			, dir:				EFN
+			, dirxml:			EFN
+			, error:			EFN
+			, group:			EFN
 			, groupCollapsed:	EFN
-			, groupEnd:		EFN
-			, info:			EFN
-			, log:			EFN
+			, groupEnd:			EFN
+			, info:				EFN
+			, log:				EFN
 			, markTimeline:		EFN
-			, profile:		EFN
+			, profile:			EFN
 			, profileEnd:		EFN
-			, time:			EFN
-			, timeEnd:		EFN
+			, time:				EFN
+			, timeEnd:			EFN
 			, timeStamp:		EFN
-			, trace:		EFN
-			, warn:			EFN
+			, trace:			EFN
+			, warn:				EFN
 		}
 		, latencyType = LT_ABS_TIME
 		, latencyMethod = function(){
@@ -50,11 +50,11 @@
 			, '' //log message
 		]
 		, logStorage = {
-			debug:			[]
-			, error:		[]
-			, info:			[]
-			, log:			[]
-			, warn:			[]				
+			debug  : []
+			, error: []
+			, info : []
+			, log  : []
+			, warn : []				
 		}
 		, clearTimes = 0
 		, reportUrl = 'http://i.qq.com/' //上报结果的接口URL，可配置
@@ -148,13 +148,13 @@
 			opts = opts || {};
 			(require.async || require)(['./components/report'], function(rpt){
 					rpt.bootstrap({
-						'reportUrl':	opts.reportUrl || reportUrl
-						, 'filter':	opts.filter
-						, 'extParams':	opts.params
-						, 'clear':	'undefined' == typeof opts.clear ? true : opts.clear
+						'reportUrl'   :	opts.reportUrl || reportUrl
+						, 'filter'    :	opts.filter
+						, 'extParams' :	opts.params
+						, 'clear'     :	'undefined' == typeof opts.clear ? true : opts.clear
 						, 'logStorage':	logStorage
 						, 'logEntries':	logEntries
-						, 'refer':	proto
+						, 'refer'     :	proto
 					});
 				});
 		};

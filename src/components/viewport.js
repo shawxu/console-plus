@@ -5,11 +5,11 @@
 	//	, DOMID_ANCHOR = '___cp_console_viewport_anchor'
 		, APJ = Array.prototype.join
 		, LOG_MAP = {
-			debug:			'd> '
-			, error:		'x> '
-			, info:			'i> '
-			, log:			'o> '
-			, warn:			'!> '
+			debug  : 'd> '
+			, error: 'x> '
+			, info : 'i> '
+			, log  : 'o> '
+			, warn : '!> '
 		}
 		, KEY_CODE_C = 67
 		, _wnd = window
