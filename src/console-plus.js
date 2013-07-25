@@ -57,6 +57,7 @@
         }
         , clearTimes = 0
         , reportUrl = 'http://i.qq.com/' //上报结果的接口URL，可配置
+        , writeConsolePanel = false
         , _wnd = window
         , _doc = document
         ;
@@ -80,7 +81,7 @@
 
                     logEntries.push(t = logEntry.join('\t'));
                     logStorage[n].push(t);
-                    CPC.call(console[n], console, logEntry[4]);
+                    writeConsolePanel && CPC.call(console[n], console, logEntry[4]);
                     //console[n].call(console, logEntry[4]);
                     //IE9不行，console.log之类的不是标准的Function类型，IE10,Chrome,FF之类都可以
                 };
@@ -122,6 +123,7 @@
             opts = opts || {};
             opts.productName && (logEntry[0] = opts.productName);
             opts.reportUrl && (reportUrl = opts.reportUrl);
+            opts.writeConsolePanel && (writeConsolePanel = true);
 
             //TODO
         };
