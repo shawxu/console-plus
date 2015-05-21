@@ -70,7 +70,7 @@ console-plus的`log()`接口会在记录本条log到总体队列的同时，再�
 
 IE9 的运行效果图
 
-![IE9运行效果](http://y.photo.qq.com/img?s=4oGLUb7TA&l=y.jpg)
+![IE9运行效果](https://s3.amazonaws.com/shawxu.net/outlink/img/cp1.png)
 
 
 
@@ -89,7 +89,7 @@ QZONE.console.error('error in function', this.toString());
 
 IE9 的运行效果图
 
-![IE9运行效果](http://y.photo.qq.com/img?s=o7gEP6QIS&l=y.jpg)
+![IE9运行效果](https://s3.amazonaws.com/shawxu.net/outlink/img/cp2.png)
 
 
 
