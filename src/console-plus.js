@@ -50,14 +50,13 @@ define(function(require, exports, module){
     }
     , clearTimes = 0
     , reportUrl = 'http://i.qq.com/' //上报结果的接口URL，可配置
-    , writeConsolePanel = false
+    , writeConsolePanel = true
     ;
 
     function consoleFactory(n){
         if(LOG_MAP[n]){
             return (...args) => {
-                let t
-                ;
+                let t;
                 logEntry[1] = n;
                 logEntry[LT_PERFORMANCE_TIME] = performance.now();
                 logEntry[4] = args.join(' ');
@@ -84,14 +83,11 @@ define(function(require, exports, module){
         opts.productName && (logEntry[0] = opts.productName);
         opts.reportUrl && (reportUrl = opts.reportUrl);
         opts.writeConsolePanel && (writeConsolePanel = true);
-
         //TODO
     };
 
     proto.get = filter => {
-        let r
-        ;
-        r = logStorage[filter] || logEntries;
+        let r = logStorage[filter] || logEntries;
         return r.join('\r\n');
     };
 

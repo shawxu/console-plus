@@ -16,8 +16,8 @@ Quick Example
 -------------
 ```javascript
 seajs.use(['../console-plus', './main'], function(cp, main){
-	!window.QZONE && (window.QZONE = {}, QZONE.console = cp);
-	QZONE.console.info('console plus loaded, bind to "QZONE.console"');
+	!window.cp && (window.cp = {}, cp.console = cp);
+	cp.console.info('console plus loaded, bind to "cp.console"');
 
 	//Your code...
 	main.bootstrap();
@@ -29,18 +29,18 @@ seajs.use(['../console-plus', './main'], function(cp, main){
 Log Format
 ----------
 下面是一条普通的`console-plus log entry`记录文本(来自于上文的example的一条结果)
-> cpExample	info	1370246230837		console plus loaded, bind to "QZONE.console"
+> cpExample	info	1370246230837		console plus loaded, bind to "cp.console"
 
 其中
 * `cpExample` 是 product name 字段
 * `info` 是 log level 字段
 * `1370246230837` 是 absolute time 字段
-* `console plus loaded, bind to "QZONE.console"` 是 log message 字段
+* `console plus loaded, bind to "cp.console"` 是 log message 字段
 
 字段之间，用'\t'(一个或者两个)来分割
 
 对于支持`performance.now()`的浏览器，单条log是这样的
-> cpExample	info		3106.000000028871	console plus loaded, bind to "QZONE.console"
+> cpExample	info		3106.000000028871	console plus loaded, bind to "cp.console"
 
 可见，此时 absolute time 字段将被 `3106.000000028871` 这样的 performance now time 字段代替
 
@@ -63,8 +63,8 @@ Interfaces
 记录一条log信息
 
 ```javascript
-//console-plus exports to QZONE.console
-QZONE.console.log('response OK', 'code 0', 'msg: succeed!');
+//console-plus exports to cp.console
+cp.console.log('response OK', 'code 0', 'msg: succeed!');
 ```
 console-plus的`log()`接口会在记录本条log到总体队列的同时，再调用浏览器原生`console.log()`
 
@@ -79,11 +79,11 @@ IE9 的运行效果图
 记录不同log等级的信息
 
 ```javascript
-//console-plus exports to QZONE.console
-QZONE.console.info('enter function "main"');
-QZONE.console.debug('tag 1', 'time 2');
-QZONE.console.warn('param "opts" is undefined');
-QZONE.console.error('error in function', this.toString());
+//console-plus exports to cp.console
+cp.console.info('enter function "main"');
+cp.console.debug('tag 1', 'time 2');
+cp.console.warn('param "opts" is undefined');
+cp.console.error('error in function', this.toString());
 ```
 同`log()`接口，`info()` `debug()` `warn()` `error()` 都会写入log队列，并调用原生`console`的相应方法，只是体现不同的log level定义
 
@@ -100,7 +100,7 @@ IE9 的运行效果图
 全局设置接口
 
 `@param {object} [opts]`<br />
-`@param {string} [opts.productName = 'qzone']`<br />
+`@param {string} [opts.productName = 'console-plus']`<br />
 `@param {string} [opts.reportUrl = 'http://i.qq.com/']`
 
 ```javascript
@@ -121,18 +121,18 @@ cp.config({
 `@param {string} [filter]`  log level过滤器，值域'log' | 'info' | 'debug' | 'warn' | 'error'
 
 ```javascript
-//console-plus exports to QZONE.console
-QZONE.console.config({
+//console-plus exports to cp.console
+cp.console.config({
 	productName: 'cpExample'	
 });
 
-QZONE.console.log('response OK', 'code 0', 'msg: succeed!');
-QZONE.console.info('enter function "main"');
-QZONE.console.debug('tag 1', 'time 2');
-QZONE.console.warn('param "opts" is undefined');
-QZONE.console.error('error in function', 'showOut()');
+cp.console.log('response OK', 'code 0', 'msg: succeed!');
+cp.console.info('enter function "main"');
+cp.console.debug('tag 1', 'time 2');
+cp.console.warn('param "opts" is undefined');
+cp.console.error('error in function', 'showOut()');
 
-QZONE.console.get();
+cp.console.get();
 
 //return value: (string)
 //cpExample	log			28894.801999995252	response OK code 0 msg: succeed!
@@ -141,7 +141,7 @@ QZONE.console.get();
 //cpExample	warn		28895.746999995026	param "opts" is undefined
 //cpExample	error		28895.951999998942	error in function showOut()
 
-QZONE.console.get('warn');
+cp.console.get('warn');
 
 //return value: (string)
 //cpExample	warn		28895.746999995026	param "opts" is undefined
@@ -164,9 +164,9 @@ QZONE.console.get('warn');
 
 
 ```javascript
-//console-plus exports to QZONE.console
+//console-plus exports to cp.console
 
-QZONE.console.report({
+cp.console.report({
 	params: {
 		uid: '1234567'
 		, label: 'xx\'s log'
@@ -191,9 +191,9 @@ QZONE.console.report({
 
 
 ```javascript
-//console-plus exports to QZONE.console
+//console-plus exports to cp.console
 
-QZONE.console.clear(true);
+cp.console.clear(true);
 
 ```
 
