@@ -1,6 +1,6 @@
+'use strict';
 define(function(require, exports, module){
-    const EFN = () => {}
-    , LOG_MAP = {
+    const LOG_MAP = {
         debug  : 'debug'
         , error: 'error'
         , info : 'info'
@@ -11,28 +11,7 @@ define(function(require, exports, module){
     , SAY_HI = 'console-plus loaded, hello world!'
     ;
 
-    let proto = { //以chrome26的console method列表为准的方法列表，后续有可能增强除log体系外的其他方法
-        assert          : EFN
-        , clear         : EFN
-        , count         : EFN
-        , debug         : EFN
-        , dir           : EFN
-        , dirxml        : EFN
-        , error         : EFN
-        , group         : EFN
-        , groupCollapsed: EFN
-        , groupEnd      : EFN
-        , info          : EFN
-        , log           : EFN
-        , markTimeline  : EFN
-        , profile       : EFN
-        , profileEnd    : EFN
-        , time          : EFN
-        , timeEnd       : EFN
-        , timeStamp     : EFN
-        , trace         : EFN
-        , warn          : EFN
-    }
+    let proto = {}
     , logEntries = []
     , logEntry = [
         'console-plus' //product name
@@ -72,11 +51,11 @@ define(function(require, exports, module){
         }
     }
 
-    for(let k in proto){
-        //这里会侵染原生console
-        //如果配置表里存在的方法原生console没有，这里会补空方法
-        !console[k] && (console[k] = EFN);
-        proto[k] = consoleFactory(k);
+    for(let k in console){
+        //给console-plus补上所有console原生的方法，可以代理调用
+        if('function' === typeof console[k]){
+            proto[k] = consoleFactory(k);
+        }
     }
 
     proto.config = (opts = {}) => {
@@ -119,6 +98,6 @@ define(function(require, exports, module){
 
     proto.info(SAY_HI);
 
-    return proto;
+    module.exports = proto;
 });
 
