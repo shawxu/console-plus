@@ -107,7 +107,8 @@ define(function(require, exports, module){
     };
 
     proto.report = (opts = {}) => {
-        (require.async || require)(['./components/report'], rpt => {
+        opts.componentUrl = opts.componentUrl || './components/report';
+        (require.async || require)([opts.componentUrl], rpt => {
                 rpt.bootstrap({
                     'reportUrl'   : opts.reportUrl || reportUrl
                     , 'filter'    : opts.filter

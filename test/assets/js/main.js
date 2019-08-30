@@ -14,6 +14,7 @@ require(['domReady', 'consolePlus'], (domReady, _cp) => {
     //DOM nodes in this function.
     _cp.config({
       writeConsolePanel: true //让console-plus能把log打到控制台
+      , productName: 'cpTest'
     });
     _cp.info("info start");
     _cp.debug("debug hahaha");
@@ -22,6 +23,10 @@ require(['domReady', 'consolePlus'], (domReady, _cp) => {
     _cp.log("log papapa");
 
     document.querySelectorAll("#txt_out")[0].textContent = _cp.get();
+
+    _cp.report({
+      componentUrl: "../../../src/components/report"
+    });
   });
 });
 
