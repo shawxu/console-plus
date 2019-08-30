@@ -1,45 +1,16 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta charset="UTF-8" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
 	<title> Test Console-Plus </title>
-	<meta name="generator" content="editplus" />
 	<meta name="author" content="XiaoXu" />
 </head>
 <body>
 	<div id="txt_out">
 		loading...
 	</div>
-	<script type="text/javascript" src="http://qzonestyle.gtimg.cn/ac/lib/sea-1.3.1.js"></script>
-	<!-- <script type="text/javascript" src="http://shawxu.github.io/res/js/require.js"></script> -->
-	<script type="text/javascript">
-	<!--
-
-
-	('undefined' == typeof window.require) && (window.require = window.seajs ? seajs.use : function(){});
-
-	require(['../src/console-plus'], function(cp){
-			!window.QZONE && (window.QZONE = {}, QZONE.console = cp);
-
-			var t0 = new Date()
-			, t1
-			;
-
-			for(var i = 0; i < 5000; ++i){
-				cp.log('console-plus log:', i);
-			}
-
-			t1 = new Date();
-
-			document.getElementById('txt_out').innerHTML = t1 - t0;
-			cp.clear();
-
-			cp.clear(1);
-		});
-
-
-	//-->
-	</script>
+	<!-- <script type="text/javascript" src="http://qzonestyle.gtimg.cn/ac/lib/sea-1.3.1.js"></script>
+	<script type="text/javascript" src="http://shawxu.github.io/res/js/require.js"></script> -->
+	<script data-main="assets/js/main.js" src="assets/js/lib/requireJs/require.js"></script>
 </body>
 </html>
