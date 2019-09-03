@@ -1,5 +1,6 @@
-'use strict';
-define(function(require, exports, module){
+define((require, exports, module) => {
+    'use strict';
+    
     const LOG_MAP = {
         debug  : 'debug'
         , error: 'error'
