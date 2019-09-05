@@ -25,7 +25,9 @@ require(['domReady', 'consolePlus'], (domReady, _cp) => {
     document.querySelectorAll("#txt_out")[0].textContent = _cp.get();
 
     _cp.report({
-      componentUrl: "../../../src/components/report"
+      componentUrl: "../../../src/components/report-xhrlv2",
+      //componentUrl: "../../../src/components/report",
+      reportUrl: "https://shawxu.cn:3001"
     });
   });
 });
