@@ -4,7 +4,7 @@ console-plus
 
 Note
 ----
-同时支持 [Sea.js](https://github.com/seajs/seajs) 和 [RequireJS](https://github.com/jrburke/requirejs)
+AMD需要 [RequireJS](https://github.com/jrburke/requirejs) 来配合支持
 
 What's it for?
 --------------

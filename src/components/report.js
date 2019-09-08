@@ -42,6 +42,7 @@ define(function(require, exports, module){
 
         consolePlus.info && consolePlus.info('console-plus report posted');
         opts.clear && consolePlus.clear && consolePlus.clear();
+        dataMap = {};
 
         sf.preSend = null;
         setTimeout(function(){

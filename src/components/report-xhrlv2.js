@@ -1,10 +1,5 @@
-define(function(require, exports, module){
+define(() => {
   'use strict';
-
-  let dataMap = {}
-  , consolePlus = {}
-  , reportUrl = 'https://shawxu.cn:3001/' //随便写个默认值...
-  ;
 
   function requestURL(url, 
     method = 'GET', 
@@ -13,7 +8,7 @@ define(function(require, exports, module){
     {
       timeOut = 3000, //default timeout 3s = 3000ms
       requestBody = {} //for POST request, request Body, data to upload
-  } = {}){
+    } = {}){
   
     let ruPromise = new Promise((rslv, rjct) => {
       let xhr = new XMLHttpRequest();
@@ -37,7 +32,7 @@ define(function(require, exports, module){
         rjct(new Error(m));
       };
       xhr.ontimeout = (timeOutError) => {
-        let m = `${timeOutError} error`;
+        let m = `${timeOutError} timeout`;
         console.log(m);
         rjct(new Error(m));
       };
@@ -50,50 +45,44 @@ define(function(require, exports, module){
 
   function send(opts){
     requestURL(
-      reportUrl,
+      opts.reportUrl,
       'POST',
       () => {},
       () => {},
       {
-        requestBody: dataMap
+        requestBody: opts.dataMap
       }
     );
   }
 
 
-  exports.bootstrap = (opts = {}) => {
-      opts.logStorage = opts.logStorage || {};
-      opts.logEntries = opts.logEntries || [];
+  return {
+    bootstrap({
+      logStorage = {},
+      logEntries = [],
+      filter,
+      reportUrl = 'https://shawxu.cn:3001/',
+      refer,
+      extParams,
+      clear = true } = {}){
+        let t, buff = [], dataMap = new FormData();
 
-      let t = performance.timing
-      , buff = []
-      ;
+        dataMap.append('timing', JSON.stringify(performance.timing.toJSON()));
 
-      if('function' === typeof t.toJSON){
-          buff.push(JSON.stringify(t.toJSON()));
-      } else {
-          for(let k in t){
-              ('number' === typeof t[k]) && buff.push(k + '\t\t\t' + t[k]);
-          }
-      }
+        t = logStorage[filter] || logEntries;
+        buff = buff.concat(t);
 
-      t = opts.logStorage[opts.filter] || opts.logEntries;
-      buff = buff.concat(t);
+        dataMap.append('log', buff.join('\n'));
 
-      reportUrl = opts.reportUrl || reportUrl;
-
-      dataMap = { log: buff.join('\r\n') };
-
-      if(t = opts.extParams){
-          for(let k in t){
-              if('log' === k.toLowerCase()) continue;
-              dataMap[k] = t[k];
-          }
-      }
-
-      consolePlus = opts.refer || consolePlus;
-      
-      send(opts);
-  };
+        if(t = extParams){
+            for(let k in t){
+                if('log' === k.toLowerCase()) continue;
+                dataMap.append(k, t[k]);
+            }
+        }
+        
+        send({ reportUrl, logStorage, logEntries, extParams, refer, dataMap, clear });
+    }
+  }
 });
 
