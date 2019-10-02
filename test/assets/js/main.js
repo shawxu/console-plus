@@ -27,7 +27,7 @@ require(['domReady', 'consolePlus'], (domReady, _cp) => {
     _cp.report({
       componentUrl: "../../../src/components/report-xhrlv2",
       //componentUrl: "../../../src/components/report",
-      reportUrl: "https://shawxu.cn:3001"
+      reportUrl: "https://shawxu.cn:3000/stat"
     });
   });
 });
