@@ -88,7 +88,7 @@ define((require) => {
     params,
     clear = true
   } = {}) => {
-    require([componentUrl], rpt => {
+    ('function' === typeof require) && require([componentUrl], rpt => {
       rpt.bootstrap({
         'reportUrl':    reportUrl
         , 'filter':     filter
