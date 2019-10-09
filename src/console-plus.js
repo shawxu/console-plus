@@ -2,35 +2,37 @@ define((require) => {
   'use strict';
 
   const LOG_MAP = {
-    debug:    'debug'
-    , error:  'error'
-    , info:   'info'
-    , log:    'log'
-    , warn:   'warn'
-  }
+      debug:    'debug'
+      , error:  'error'
+      , info:   'info'
+      , log:    'log'
+      , warn:   'warn'
+    }
+    , DEF_NAME = 'console-plus'
     , LT_PERFORMANCE_TIME = 3
-    , SAY_HI = 'console-plus loaded, hello world!'
+    , SAY_HI = DEF_NAME + ' loaded, hello world!'
     ;
 
   let proto = {}
     , logEntries = []
     , logEntry = [
-      'console-plus' //product name
-      , '' //log level
-      , '' //absolute time
-      , '' //performance now time
-      , '' //log message
-    ]
+        DEF_NAME //default product name
+        , '' //log level
+        , '' //absolute time
+        , '' //performance now time
+        , '' //log message
+      ]
     , logStorage = {
-      debug:    []
-      , error:  []
-      , info:   []
-      , log:    []
-      , warn:   []
-    }
+        debug:    []
+        , error:  []
+        , info:   []
+        , log:    []
+        , warn:   []
+      }
     , clearTimes = 0
-    , reportUrlCfg = 'https://shawxu.cn:3001/' //上报结果的接口URL，可配置
-    , writeConsolePanelCfg = true;
+    , reportUrlCfg = 'https://shawxu.cn:3000/' //上报结果的接口URL，可配置
+    , injected = false
+    , silent = false;
 
   function consoleFactory(n) {
     if (LOG_MAP[n]) {
@@ -42,7 +44,7 @@ define((require) => {
 
         logEntries.push(t = logEntry.join('\t'));
         logStorage[n].push(t);
-        writeConsolePanelCfg && console[n].call(console, logEntry[4]);
+        !silent && console[n].call(console, logEntry[4]);
       };
     } else {
       return (...args) => {
@@ -58,10 +60,10 @@ define((require) => {
     }
   }
 
-  proto.config = ({ productName = logEntry[0], reportUrl = reportUrlCfg, writeConsolePanel = true } = {}) => {
+  proto.config = ({ productName = logEntry[0], reportUrl = reportUrlCfg, silentMode = false } = {}) => {
     if (productName && 'string' === typeof productName) logEntry[0] = productName;
     if (reportUrl && 'string' === typeof reportUrl) reportUrlCfg = reportUrl;
-    if ('boolean' === typeof writeConsolePanel) writeConsolePanelCfg = writeConsolePanel;
+    silent = !!silentMode;
     //TODO
   };
 
@@ -99,6 +101,17 @@ define((require) => {
         , 'refer':      proto
       });
     });
+  };
+
+  proto.inject = () => {
+    if(!injected){
+      for (let k in LOG_MAP) {
+        if ('function' === typeof console[k]) {
+          console[k] = proto[k];
+        }
+      }
+      injected = true;
+    }
   };
 
   proto.info(SAY_HI);

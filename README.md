@@ -107,7 +107,7 @@ IE9 的运行效果图
 //console-plus exports to cp
 cp.config({
 	productName: 'cpExample'
-	, reportUrl: 'http://w.qzone.qq.com/cgi-bin/user/report'
+	, reportUrl: 'https://shawxu.cn:3000/'
 });
 ```
 
