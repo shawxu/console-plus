@@ -40,11 +40,17 @@ define((require) => {
         let t;
         logEntry[1] = n;
         logEntry[LT_PERFORMANCE_TIME] = performance.now();
-        logEntry[4] = args.join(' ');
+        logEntry[4] = args.join(' - ');
 
         logEntries.push(t = logEntry.join('\t'));
         logStorage[n].push(t);
-        !silent && console[n].call(console, logEntry[4]);
+        if(!silent){
+          if(!injected){
+            console[n].apply(console, args);
+          } else {
+            proto['__' + n + '__'].apply(proto, args);
+          }
+        }
       };
     } else {
       return (...args) => {
@@ -107,7 +113,8 @@ define((require) => {
     if(!injected){
       for (let k in LOG_MAP) {
         if ('function' === typeof console[k]) {
-          console[k] = proto[k];
+          proto['__' + k + '__'] = console[k]; //把老的引用存起来
+          console[k] = proto[k]; //inject掉
         }
       }
       injected = true;

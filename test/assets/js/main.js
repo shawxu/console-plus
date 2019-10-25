@@ -13,16 +13,19 @@ require(['domReady', 'consolePlus'], (domReady, _cp) => {
     //It will be safe to query the DOM and manipulate
     //DOM nodes in this function.
     _cp.config({
-      writeConsolePanel: true //让console-plus能把log打到控制台
+      silent: false //让console-plus能把log打到控制台,其实不用写也可,默认就是flase
       , productName: 'cpTest'
     });
-    _cp.info("info start");
-    _cp.debug("debug hahaha");
-    _cp.error("error lalala");
-    _cp.warn("warn wowowo");
-    _cp.log("log papapa");
+    console.info("info start", 60);
+    console.debug("debug hahaha", 1024);
+    _cp.inject();
+    console.error("error", "lalala", 123);
+    console.warn("warn wowowo", 456);
+    console.log("log papapa", 777);
 
-    document.querySelectorAll("#txt_out")[0].textContent = _cp.get();
+    setTimeout(() => {
+      document.querySelectorAll("#txt_out")[0].textContent = _cp.get();
+    }, 4000);
 
     _cp.report({
       componentUrl: "../../../src/components/report-xhrlv2",

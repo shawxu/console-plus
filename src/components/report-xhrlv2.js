@@ -1,10 +1,13 @@
 define(() => {
   'use strict';
 
+  let proto = undefined, 
+    clearThen = true;
+
   function requestURL(url, 
     method = 'GET', 
     succCallback = () => {}, 
-    errorCallback = (err) => { console.log('XHR default error callback, exception is:', err) }, //errorCallback
+    errorCallback = (err) => {}, //errorCallback
     {
       timeOut = 3000, //default timeout 3s = 3000ms
       requestBody = {} //for POST request, request Body, data to upload
@@ -17,23 +20,22 @@ define(() => {
       xhr.timeout = timeOut;
   
       xhr.onload = (pe) => {
-        console.log(xhr.readyState, xhr.status, xhr.statusText, xhr.responseType, xhr.responseText);
         if(xhr.readyState === 4){
           if(xhr.status === 200){
-            console.log('will call resolve');
+            proto && ('function' === typeof proto.clear) && proto.info('will call resolve');
             rslv(xhr.responseText);
+            clearThen && proto && ('function' === typeof proto.clear) && proto.clear();
           }
-  
         }
       };
       xhr.onerror = (networkError) => {
         let m = `${networkError} error`;
-        console.log(m);
+        //console.log(m);
         rjct(new Error(m));
       };
       xhr.ontimeout = (timeOutError) => {
         let m = `${timeOutError} timeout`;
-        console.log(m);
+        //console.log(m);
         rjct(new Error(m));
       };
   
@@ -44,6 +46,7 @@ define(() => {
   }
 
   function send(opts){
+    clearThen = opts.clear;
     requestURL(
       opts.reportUrl,
       'POST',
