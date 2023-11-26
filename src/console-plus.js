@@ -90,7 +90,7 @@ define((require) => {
   };
 
   proto.report = ({
-    componentUrl = './components/report',
+    componentUrl = './components/report-xhrlv2',
     reportUrl = reportUrlCfg,
     filter,
     params,

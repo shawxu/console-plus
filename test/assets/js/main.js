@@ -22,10 +22,12 @@ require(['domReady', 'consolePlus'], (domReady, _cp) => {
     console.error("error", "lalala", 123);
     console.warn("warn wowowo", 456);
     console.log("log papapa", 777);
+    console.info("info xxxxx", 8888);
+    console.debug("debug yyyyy", 999999);
 
     setTimeout(() => {
       document.querySelectorAll("#txt_out")[0].textContent = _cp.get();
-    }, 4000);
+    }, 1000);
 
     _cp.report({
       componentUrl: "../../../src/components/report-xhrlv2",
