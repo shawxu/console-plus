@@ -30,8 +30,8 @@ require([/*'domReady', */'consolePlus'], (/*domReady, */_cp) => {
     }, 200);
 
     _cp.report({
-      componentUrl: "../../../src/components/report-xhrlv2",
-      //componentUrl: "../../../src/components/report",
+      //componentUrl: "../../../src/components/report-xhrlv2",
+      componentUrl: "../../../src/components/reportr"
       //reportUrl: "https://shawxu.cn:3000/stat"
     });
   //});

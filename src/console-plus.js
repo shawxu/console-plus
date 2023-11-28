@@ -84,16 +84,16 @@ define((require) => {
   };
 
   proto.report = ({
-    componentUrl = "./components/report-xhrlv2",
+    componentUrl = "./components/reportr",
     reportUrl = reportUrlCfg,
     filter,
     params,
     clear = true
   } = {}) => {
     require([componentUrl], rpt => {
-      rpt.bootstrap({
-        "reportUrl":    reportUrl
-        , "filter":     filter
+      rpt.send(reportUrl, {
+        //"reportUrl":    reportUrl
+        "filter":       filter
         , "extParams":  params
         , "clear":      clear
         , "logStorage": logStorage
