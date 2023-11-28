@@ -7,8 +7,8 @@ requirejs.config({
 });
 
 
-require(['domReady', 'consolePlus'], (domReady, _cp) => {
-  domReady(() => {
+require([/*'domReady', */'consolePlus'], (/*domReady, */_cp) => {
+  //domReady(() => {
     //This function is called once the DOM is ready.
     //It will be safe to query the DOM and manipulate
     //DOM nodes in this function.
@@ -32,8 +32,8 @@ require(['domReady', 'consolePlus'], (domReady, _cp) => {
     _cp.report({
       componentUrl: "../../../src/components/report-xhrlv2",
       //componentUrl: "../../../src/components/report",
-      reportUrl: "https://shawxu.cn:3000/stat"
+      //reportUrl: "https://shawxu.cn:3000/stat"
     });
-  });
+  //});
 });
 

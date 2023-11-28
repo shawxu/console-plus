@@ -1,26 +1,25 @@
 define((require) => {
-  'use strict';
 
   const LOG_MAP = {
-      debug:    'debug'
-      , error:  'error'
-      , info:   'info'
-      , log:    'log'
-      , warn:   'warn'
+      debug:    "debug"
+      , error:  "error"
+      , info:   "info"
+      , log:    "log"
+      , warn:   "warn"
     }
-    , DEF_NAME = 'console-plus'
+    , DEF_NAME = "console-plus"
     , LT_PERFORMANCE_TIME = 3
-    , SAY_HI = DEF_NAME + ' loaded, hello world!'
+    , SAY_HI = DEF_NAME + " loaded, hello world!"
     ;
 
   let proto = {}
     , logEntries = []
     , logEntry = [
         DEF_NAME //default product name
-        , '' //log level
-        , '' //absolute time
-        , '' //performance now time
-        , '' //log message
+        , "" //log level
+        , "" //absolute time
+        , "" //performance now time
+        , "" //log message
       ]
     , logStorage = {
         debug:    []
@@ -30,7 +29,7 @@ define((require) => {
         , warn:   []
       }
     , clearTimes = 0
-    , reportUrlCfg = 'https://shawxu.cn:3000/' //上报结果的接口URL，可配置
+    , reportUrlCfg = "https://shawxu.cn/blog/add/" //上报结果的接口URL，可配置
     , injected = false
     , silent = false;
 
@@ -40,15 +39,15 @@ define((require) => {
         let t;
         logEntry[1] = n;
         logEntry[LT_PERFORMANCE_TIME] = performance.now();
-        logEntry[4] = args.join(' - ');
+        logEntry[4] = args.join(" - ");
 
-        logEntries.push(t = logEntry.join('\t'));
+        logEntries.push(t = logEntry.join("\t"));
         logStorage[n].push(t);
         if(!silent){
           if(!injected){
             console[n].apply(console, args);
           } else {
-            proto['__' + n + '__'].apply(proto, args);
+            proto["__" + n + "__"].apply(proto, args);
           }
         }
       };
@@ -61,21 +60,21 @@ define((require) => {
 
   for (let k in console) {
     //给console-plus补上所有console原生的方法，可以代理调用
-    if ('function' === typeof console[k]) {
+    if ("function" == typeof console[k]) {
       proto[k] = consoleFactory(k);
     }
   }
 
   proto.config = ({ productName = logEntry[0], reportUrl = reportUrlCfg, silentMode = false } = {}) => {
-    if (productName && 'string' === typeof productName) logEntry[0] = productName;
-    if (reportUrl && 'string' === typeof reportUrl) reportUrlCfg = reportUrl;
+    if (productName && "string" == typeof productName) logEntry[0] = productName;
+    if (reportUrl && "string" == typeof reportUrl) reportUrlCfg = reportUrl;
     silent = !!silentMode;
     //TODO
   };
 
   proto.get = filter => {
     let r = logStorage[filter] || logEntries;
-    return r.join('\r\n');
+    return r.join("\r\n");
   };
 
   proto.clear = clearConsole => {
@@ -86,25 +85,25 @@ define((require) => {
 
     clearConsole && console.clear && console.clear();
 
-    proto.info('console-plus cleared, ', ++clearTimes, 'times');
+    proto.info("console-plus cleared, ", ++clearTimes, "times");
   };
 
   proto.report = ({
-    componentUrl = './components/report-xhrlv2',
+    componentUrl = "./components/report-xhrlv2",
     reportUrl = reportUrlCfg,
     filter,
     params,
     clear = true
   } = {}) => {
-    ('function' === typeof require) && require([componentUrl], rpt => {
+    ("function" == typeof require) && require([componentUrl], rpt => {
       rpt.bootstrap({
-        'reportUrl':    reportUrl
-        , 'filter':     filter
-        , 'extParams':  params
-        , 'clear':      clear
-        , 'logStorage': logStorage
-        , 'logEntries': logEntries
-        , 'refer':      proto
+        "reportUrl":    reportUrl
+        , "filter":     filter
+        , "extParams":  params
+        , "clear":      clear
+        , "logStorage": logStorage
+        , "logEntries": logEntries
+        , "refer":      proto
       });
     });
   };
@@ -112,8 +111,8 @@ define((require) => {
   proto.inject = () => {
     if(!injected){
       for (let k in LOG_MAP) {
-        if ('function' === typeof console[k]) {
-          proto['__' + k + '__'] = console[k]; //把老的引用存起来
+        if ("function" == typeof console[k]) {
+          proto["__" + k + "__"] = console[k]; //把老的引用存起来
           console[k] = proto[k]; //inject掉
         }
       }
