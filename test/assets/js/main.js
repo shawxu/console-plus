@@ -1,7 +1,7 @@
 requirejs.config({
   baseUrl: "assets/js",
   paths: {
-    domReady: "https://s3.shawxu.net/js/lib/requirejs/plugins/domReady.2.0.1",
+    //domReady: "https://s3.shawxu.net/js/lib/requirejs/plugins/domReady.2.0.1",
     consolePlus: "../../../src/console-plus" //直接引用src文件
   }
 });
@@ -16,8 +16,8 @@ require([/*'domReady', */'consolePlus'], (/*domReady, */_cp) => {
       silent: false //让console-plus能把log打到控制台,其实不用写也可,默认就是flase
       , productName: 'cpTest'
     });
-    console.info("info start", 60);
-    console.debug("debug hahaha", 1024);
+    _cp.info("info start", 60);
+    _cp.debug("debug hahaha", 1024);
     _cp.inject();
     console.error("error", "lalala", 123);
     console.warn("warn wowowo", 456);
@@ -26,8 +26,8 @@ require([/*'domReady', */'consolePlus'], (/*domReady, */_cp) => {
     console.debug("debug yyyyy", 999999);
 
     setTimeout(() => {
-      document.querySelectorAll("#txt_out")[0].textContent = _cp.get();
-    }, 1000);
+      document.querySelector("#txt_out").textContent = _cp.get();
+    }, 200);
 
     _cp.report({
       componentUrl: "../../../src/components/report-xhrlv2",

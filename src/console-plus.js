@@ -1,32 +1,27 @@
 define((require) => {
 
   const LOG_MAP = {
-      debug:    "debug"
-      , error:  "error"
-      , info:   "info"
-      , log:    "log"
-      , warn:   "warn"
-    }
-    , DEF_NAME = "console-plus"
-    , LT_PERFORMANCE_TIME = 3
-    , SAY_HI = DEF_NAME + " loaded, hello world!"
-    ;
+      "debug": 1
+      , "error": 1
+      , "info": 1
+      , "log": 1
+      , "warn": 1
+    };
 
   let proto = {}
     , logEntries = []
     , logEntry = [
-        DEF_NAME //default product name
+        "console-plus" //default product name
         , "" //log level
-        , "" //absolute time
         , "" //performance now time
         , "" //log message
       ]
     , logStorage = {
-        debug:    []
-        , error:  []
-        , info:   []
-        , log:    []
-        , warn:   []
+        "debug":    []
+        , "error":  []
+        , "info":   []
+        , "log":    []
+        , "warn":   []
       }
     , clearTimes = 0
     , reportUrlCfg = "https://shawxu.cn/blog/add/" //上报结果的接口URL，可配置
@@ -38,22 +33,22 @@ define((require) => {
       return (...args) => {
         let t;
         logEntry[1] = n;
-        logEntry[LT_PERFORMANCE_TIME] = performance.now();
-        logEntry[4] = args.join(" - ");
+        logEntry[2] = performance.now();
+        logEntry[3] = args.join(" - ");
 
         logEntries.push(t = logEntry.join("\t"));
         logStorage[n].push(t);
         if(!silent){
           if(!injected){
-            console[n].apply(console, args);
+            console[n](...args);
           } else {
-            proto["__" + n + "__"].apply(proto, args);
+            ("function" == typeof LOG_MAP[n]) && LOG_MAP[n](...args);
           }
         }
       };
     } else {
       return (...args) => {
-        console[n].apply(console, args);
+        console[n](...args);
       };
     }
   }
@@ -95,7 +90,7 @@ define((require) => {
     params,
     clear = true
   } = {}) => {
-    ("function" == typeof require) && require([componentUrl], rpt => {
+    require([componentUrl], rpt => {
       rpt.bootstrap({
         "reportUrl":    reportUrl
         , "filter":     filter
@@ -112,7 +107,7 @@ define((require) => {
     if(!injected){
       for (let k in LOG_MAP) {
         if ("function" == typeof console[k]) {
-          proto["__" + k + "__"] = console[k]; //把老的引用存起来
+          LOG_MAP[k] = console[k]; //把老的引用存起来
           console[k] = proto[k]; //inject掉
         }
       }
@@ -120,7 +115,7 @@ define((require) => {
     }
   };
 
-  proto.info(SAY_HI);
+  proto.info(logEntry[0], " loaded, hello world!");
 
   return proto; //export consolePlus
 });
