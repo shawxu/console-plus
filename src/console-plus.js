@@ -98,7 +98,7 @@ define((require) => {
         , "clear":      clear
         , "logStorage": logStorage
         , "logEntries": logEntries
-        , "refer":      proto
+        , "cpRefer":    proto
       });
     });
   };

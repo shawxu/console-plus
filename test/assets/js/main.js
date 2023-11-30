@@ -27,7 +27,7 @@ require([/*'domReady', */'consolePlus'], (/*domReady, */_cp) => {
 
     setTimeout(() => {
       document.querySelector("#txt_out").textContent = _cp.get();
-    }, 200);
+    }, 2000);
 
     _cp.report({
       //componentUrl: "../../../src/components/report-xhrlv2",
