@@ -42,18 +42,18 @@ define((require, exports, module) => {
         fetch(t, {
           "method": "POST",
           "priority": "low",
-          //"mode": "cors",
-          "mode": "no-cors", //FOR DEV
+          "mode": "cors",
           "signal": s.signal,
           "body": dataMap
+        }).then(resp => {
+          if("function" == typeof resp.json){
+            return resp.json();
+          }
+        }).then(dt => {
+          cpRefer.info(JSON.stringify(dt));
+
         }).catch(err => {
           cpRefer.error("Console-Plus: report: send:", err);
-        }).then(resp => {
-          if("object" == typeof resp){
-            cpRefer.info(resp.json());
-          }else{
-            cpRefer.error("Console-Plus: report: send: Fetch no Response.");
-          }
         }).finally(() => {
           clearTimeout(o);
         });

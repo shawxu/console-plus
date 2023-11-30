@@ -1,17 +1,14 @@
 requirejs.config({
-  baseUrl: "assets/js",
+  baseUrl: "../src",
   paths: {
     //domReady: "https://s3.shawxu.net/js/lib/requirejs/plugins/domReady.2.0.1",
-    consolePlus: "../../../src/console-plus" //直接引用src文件
+    consolePlus: "./console-plus" //直接引用src文件
   }
 });
 
 
 require([/*'domReady', */'consolePlus'], (/*domReady, */_cp) => {
   //domReady(() => {
-    //This function is called once the DOM is ready.
-    //It will be safe to query the DOM and manipulate
-    //DOM nodes in this function.
     _cp.config({
       silent: false //让console-plus能把log打到控制台,其实不用写也可,默认就是flase
       , productName: 'cpTest'
@@ -30,9 +27,7 @@ require([/*'domReady', */'consolePlus'], (/*domReady, */_cp) => {
     }, 2000);
 
     _cp.report({
-      //componentUrl: "../../../src/components/report-xhrlv2",
-      componentUrl: "../../../src/components/reportr"
-      //reportUrl: "https://shawxu.cn:3000/stat"
+      componentUrl: "./components/reportr"
     });
   //});
 });
