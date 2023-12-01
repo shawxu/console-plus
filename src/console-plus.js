@@ -34,7 +34,7 @@ define((require) => {
         let t;
         logEntry[1] = n;
         logEntry[2] = performance.now();
-        logEntry[3] = args.join(" - ");
+        logEntry[3] = args.join(" ");
 
         logEntries.push(t = logEntry.join("\t"));
         logStorage[n].push(t);
@@ -115,7 +115,7 @@ define((require) => {
     }
   };
 
-  proto.info(logEntry[0], " loaded, hello world!");
+  proto.info(logEntry[0], "loaded, hello world!");
 
   return proto; //export consolePlus
 });

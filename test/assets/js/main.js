@@ -17,9 +17,9 @@ require([/*'domReady', */'consolePlus'], (/*domReady, */_cp) => {
     _cp.debug("debug hahaha", 1024);
     _cp.inject();
     console.error("error", "lalala", 123);
-    console.warn("warn wowowo", 456);
-    console.log("log papapa", 777);
-    console.info("info xxxxx", 8888);
+    console.warn("wowowo", 456);
+    console.log("papapa", 777);
+    console.info("info 哈哈哈哈哈", 8888);
     console.debug("debug yyyyy", 999999);
 
     setTimeout(() => {
@@ -27,7 +27,8 @@ require([/*'domReady', */'consolePlus'], (/*domReady, */_cp) => {
     }, 2000);
 
     _cp.report({
-      componentUrl: "./components/reportr"
+      //componentUrl: "./components/reportr",
+      clear: false
     });
   //});
 });

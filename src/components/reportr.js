@@ -7,17 +7,20 @@ define((require, exports, module) => {
       cpRefer,
       extParams,
       clear = true } = {}) {
+        const [pTiming] = performance.getEntriesByType("navigation");
+
         let t, 
           buff, 
           s,
           o,
           dataMap = new FormData();
 
-        //TODO
-        //dataMap.append("timing", ""); 
+        if(pTiming.toJSON) {
+          dataMap.append("timing", JSON.stringify(pTiming.toJSON()));
+        }
 
         buff = Array.from(logStorage[filter] || logEntries);
-        dataMap.set("log", buff.join('\n'));
+        dataMap.append("log", buff.join('\n'));
 
         if(t = extParams){
             for(let k in t){
@@ -29,14 +32,14 @@ define((require, exports, module) => {
         try {
           t = new URL(reportUrl);
         } catch(err) {
-          cpRefer.error(`${err} \nConsole-Plus: report: send: Invalid report URL string.`);
+          cpRefer.error(`${err} \nconsole-plus: report: send: Invalid report URL string.`);
           return;
         }
 
         s = new AbortController();
         o = setTimeout(() => {
           s.abort();
-          cpRefer.error("Console-Plus: report: send: Fetch 3s timeout.");
+          cpRefer.error("console-plus: report: send: Fetch 3s timeout.");
         }, 3000);
 
         fetch(t, {
@@ -46,14 +49,18 @@ define((require, exports, module) => {
           "signal": s.signal,
           "body": dataMap
         }).then(resp => {
-          if("function" == typeof resp.json){
-            return resp.json();
-          }
-        }).then(dt => {
-          cpRefer.info(JSON.stringify(dt));
+          return resp.json();
 
+        }).then(dt => {
+          //cpRefer.info(JSON.stringify(dt));
+          if(dt && dt.code === 0) {
+            cpRefer.info(dt.msg);
+            if(clear) {
+              cpRefer.clear();
+            }
+          }
         }).catch(err => {
-          cpRefer.error("Console-Plus: report: send:", err);
+          cpRefer.error("console-plus: report: send: Response Exception:\n", err);
         }).finally(() => {
           clearTimeout(o);
         });
