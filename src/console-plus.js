@@ -1,4 +1,7 @@
 define((require) => {
+  if ("undefined" == typeof console) {
+    throw new Error("No console object.");
+  }
 
   const LOG_MAP = {
       "debug": 1
@@ -24,39 +27,32 @@ define((require) => {
         , "warn":   []
       }
     , clearTimes = 0
-    , reportUrlCfg = "https://shawxu.cn/blog/add/" //上报结果的接口URL，可配置
+    , reportUrlCfg = "https://shawxu.cn/log/" //上报结果的接口URL，可配置
     , injected = false
     , silent = false;
-
-  function consoleFactory(n) {
-    if (LOG_MAP[n]) {
-      return (...args) => {
-        let t;
-        logEntry[1] = n;
-        logEntry[2] = performance.now();
-        logEntry[3] = args.join(" ");
-
-        logEntries.push(t = logEntry.join("\t"));
-        logStorage[n].push(t);
-        if(!silent){
-          if(!injected){
-            console[n](...args);
-          } else {
-            ("function" == typeof LOG_MAP[n]) && LOG_MAP[n](...args);
-          }
-        }
-      };
-    } else {
-      return (...args) => {
-        console[n](...args);
-      };
-    }
-  }
-
+  
   for (let k in console) {
-    //给console-plus补上所有console原生的方法，可以代理调用
-    if ("function" == typeof console[k]) {
-      proto[k] = consoleFactory(k);
+    if (LOG_MAP[k] && "function" == typeof console[k]) {
+      let prxy = new Proxy(console[k], {
+        apply (tgt, thisArg, argArr) {
+          let t;
+          logEntry[1] = k;
+          logEntry[2] = performance.now().toFixed(3); //小数点后3位够了
+          logEntry[3] = argArr.join(" ");
+          logEntries.push(t = logEntry.join("\t"));
+          logStorage[k].push(t);
+          if(!silent){
+            if(!injected){
+              tgt(...argArr);
+            } else {
+              ("function" == typeof LOG_MAP[k]) && LOG_MAP[k](...argArr);
+            }
+          }
+  
+        }
+      });
+
+      proto[k] = prxy;
     }
   }
 
