@@ -6,7 +6,3 @@ package-lock.json
 *.log
 
 /node_modules
-/tools
-/dist
-
-/.vscode
