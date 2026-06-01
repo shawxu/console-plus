@@ -9,12 +9,6 @@
             "request": "launch",
             "type": "chrome",
             "file": "${file}"
-        },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:5500/test/perf.html"
         }
     ]
 }
