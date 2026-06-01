@@ -1,182 +1,168 @@
-console-plus
-============
-增强型console工具，对接window.console，将console log记录收集，并上报到指定web接口
+# console-plus
 
-Note
-----
-AMD需要 [RequireJS](https://requirejs.org/) 来配合支持
+增强型 console 日志工具，拦截并收集 `window.console` 的所有输出，按级别存储，可上报到指定接口。
 
-What's it for?
---------------
-* 能够将console中的log/warn/debug/info/error接口所记录的信息全部记录到闭包持久队列的小工具，便于在用户有问题的时候整体发回，进行问题定位
-* 同时对接浏览器本身console的同名方法，可选择性直接代理window.console或是导入到其他namespace
+---
 
-Quick Example
--------------
-```javascript
-require(["../console-plus"], function(cp){
-	cp.info("console plus loaded");
+## 安装
 
-	//Your code...
-	main.bootstrap();
-
-	cp.log("Hello world!");
-});
-```
-样例源代码见[这里](https://github.com/shawxu/console-plus/tree/master/test)
-
-
-Log Format
-----------
-下面是一条普通的`console-plus log entry`记录文本(来自于上文的example的一条结果)
-> cpExample	info	1234.8999999761581		console plus loaded"
-
-其中
-* `cpExample` 是 product name 字段
-* `info` 是 log level 字段
-* `1234.8999999761581` 是 `performance.now()` 时间
-* `console plus loaded` 是 log message 字段
-
-字段之间，用'\t'(一个或者两个)来分割
-
-事实上，核心字段定义数据结构是如下的样子
-```javascript
-logEntry = [
-	''   //product name
-	, '' //log level
-	, '' //performance now time
-	, '' //log message
-];
+```bash
+npm install console-plus
 ```
 
-Interfaces
-----------
+或在浏览器中直接引用：
 
-### log ###
-
-记录一条log信息
-
-```javascript
-//console-plus exports to cp.console
-cp.console.log('response OK', 'code 0', 'msg: succeed!');
+```html
+<script type="module">
+  import cp from 'https://cdn.jsdelivr.net/npm/console-plus/src/console-plus.js';
+  cp.info("loaded");
+</script>
 ```
-console-plus的`log()`接口会在记录本条log到总体队列的同时，再调用浏览器原生`console.log()`
 
+---
 
-### info / debug / warn / error ###
+## 快速开始
 
-记录不同log等级的信息
+### 浏览器（ESM）
 
 ```javascript
-//console-plus exports to cp.console
-cp.console.info('enter function "main"');
-cp.console.debug('tag 1', 'time 2');
-cp.console.warn('param "opts" is undefined');
-cp.console.error('error in function', this.toString());
+import cp from './src/console-plus.js';
+
+cp.config({ productName: 'myApp' });
+cp.info("console-plus loaded");
+
+// 你的代码...
+main.bootstrap();
+
+cp.log("Hello world!");
+cp.inject(); // 可选：把 console 方法注入回 window.console
 ```
-同`log()`接口，`info()` `debug()` `warn()` `error()` 都会写入log队列，并调用原生`console`的相应方法，只是体现不同的log level定义
 
-
-### config ###
-
-##### exports.config(opts) #####
-
-全局设置接口
-
-`@param {object} [opts]`<br>
-`@param {string} [opts.productName = 'console-plus']`<br>
-`@param {string} [opts.reportUrl = 'https://shawxu.cn/log/add/']`<br>
-`@param {boolean} [opts.silentMode = false]`
+### Node.js
 
 ```javascript
-//console-plus exports to cp
+import cp from 'console-plus';
+
+cp.config({ productName: 'server-log' });
+cp.info("Server started");
+```
+
+### 构建压缩版
+
+```bash
+npx uglify-js src/console-plus.js -o dist/console-plus.min.js
+```
+
+---
+
+## API
+
+### cp.log / cp.info / cp.debug / cp.warn / cp.error
+
+记录对应级别的日志，存储到内存队列，同时调用原生 `console` 方法。
+
+```javascript
+cp.info('enter function "main"');
+cp.debug('tag 1', 'time 2');
+cp.warn('param "opts" is undefined');
+cp.error('error in function', this.toString());
+cp.log('response OK', 'code 0');
+```
+
+### cp.config(opts)
+
+全局配置
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `productName` | `'console-plus'` | 产品名称 |
+| `reportUrl` | `'https://shawxu.cn/log/'` | 上报接口地址 |
+| `silentMode` | `false` | 静默模式（不上报到原生 console） |
+
+```javascript
 cp.config({
-	productName: 'cpExample'
-	, silentMode: true
+  productName: 'myApp',
+  silentMode: false
 });
 ```
 
+### cp.get(filter?)
 
-### get ###
-
-##### exports.get(filter) #####
-
-获取存储在前端log队列中的信息
-
-`@param {string} [filter]`  log level过滤器，值域'log' | 'info' | 'debug' | 'warn' | 'error'
+获取收集的日志，格式为 `\t` 分隔的文本行。
 
 ```javascript
-//console-plus exports to cp.console
-cp.console.config({
-	productName: 'cpExample'	
+cp.get();       // 获取所有日志
+cp.get('error'); // 只获取 error 级别
+```
+
+返回格式示例：
+```
+myApp	info	1234.899	console plus loaded
+myApp	error	1245.678	something went wrong
+```
+
+### cp.clear(clearConsole?)
+
+清空日志队列。
+
+```javascript
+cp.clear();       // 只清队列
+cp.clear(true);    // 同时清空浏览器 console 面板
+```
+
+### cp.report(opts)
+
+上报日志到服务端。
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `filter` | 无 | 只上报指定级别的日志 |
+| `reportUrl` | 配置的地址 | 上报地址 |
+| `params` | `{}` | 附加参数（如 uid 等） |
+| `clear` | `true` | 上报后清空队列 |
+
+```javascript
+cp.report({
+  params: { uid: '1234567', label: 'user log' },
+  filter: 'error',
+  clear: true
 });
-
-cp.console.log('response OK', 'code 0', 'msg: succeed!');
-cp.console.info('enter function "main"');
-cp.console.debug('tag 1', 'time 2');
-cp.console.warn('param "opts" is undefined');
-cp.console.error('error in function', 'showOut()');
-
-cp.console.get();
-
-//return value: (string)
-//cpExample	log			28894.801999995252	response OK code 0 msg: succeed!
-//cpExample	info		28895.2169999975	enter function "main"
-//cpExample	debug		28895.513999996183	tag 1 time 2
-//cpExample	warn		28895.746999995026	param "opts" is undefined
-//cpExample	error		28895.951999998942	error in function showOut()
-
-cp.console.get('warn');
-
-//return value: (string)
-//cpExample	warn		28895.746999995026	param "opts" is undefined
-
 ```
 
+### cp.inject()
 
-### report ###
-
-##### exports.report(opts) #####
-
-上报错误到指定服务
-
-`@param {object}  [opts]`<br>
-`@param {string}  [opts.filter]`<br>
-`@param {string}  [opts.reportUrl = 'https://shawxu.cn/blog/add/']`<br>
-`@param {object}  [opts.params = {}]`<br>
-`@param {boolean} [opts.clear = true] 是否清理存储中的log记录`
-
+将 `cp.log/info/debug/warn/error` 注入回 `window.console`，让原生 `console.log()` 也能自动收集。
 
 ```javascript
-//console-plus exports to cp.console
-
-cp.console.report({
-	params: {
-		uid: '1234567'
-		, label: 'xx\'s log'
-	}
-	, filter: 'error' 
-});
-
-//report HTTP POST request body:
-//log=......log...text......&uid=1234567&label=xx%27s+log
+cp.inject();
+console.log("这条也会被收集"); // 不需要调 cp.log，直接用原生 console 即可
 ```
 
+---
 
-### clear ###
+## 日志格式
 
-##### exports.clear(clearConsole) #####
-
-清理存储中的所有log记录
-
-`@param {boolean} [clearConsole = false] 是否同时清理console面板中的内容`
-
-
-```javascript
-//console-plus exports to cp.console
-
-cp.console.clear(true);
+每条日志为 `\t` 分隔的文本行：
 
 ```
+productName\tlevel\ttimestamp\tmessage
+```
 
+| 字段 | 说明 |
+|------|------|
+| `productName` | 产品名，来自 `cp.config({ productName })` |
+| `level` | 日志级别：`log` / `info` / `debug` / `warn` / `error` |
+| `timestamp` | `performance.now()` 毫秒时间戳 |
+| `message` | 所有参数的空格拼接 |
 
+---
+
+## 示例项目
+
+参考 [test/](test/) 目录，包含浏览器和 Node.js 的完整示例。
+
+---
+
+## License
+
+MIT

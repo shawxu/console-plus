@@ -1,7 +1,7 @@
-//define((require) => {
-//  if ("undefined" == typeof console) {
-//    throw new Error("No console object.");
-//  }
+/**
+ * console-plus - Enhanced console logger
+ * ESM module, no AMD/RequireJS required
+ */
 
 const LOG_MAP = {
     "debug": 1
@@ -114,8 +114,4 @@ proto.inject = () => {
 proto.info(logEntry[0], "loaded, hello world!");
 
 export default proto;
-
-  //return proto; //export consolePlus
-
-//});
 
