@@ -1,4 +1,44 @@
 {
+  "name": "console-plus",
+  "version": "1.0.0",
+  "description": "Enhanced console logger with collection, storage, and reporting capabilities",
+  "type": "module",
+  "main": "src/console-plus.js",
+  "module": "src/console-plus.js",
+  "types": "src/console-plus.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/console-plus.d.ts",
+      "import": "./src/console-plus.js",
+      "default": "./src/console-plus.js"
+    },
+    "./components/reportr": "./src/components/reportr.js"
+  },
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "uglifyjs src/console-plus.js -o dist/console-plus.min.js -c -m",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "console",
+    "logger",
+    "log",
+    "debug",
+    "report",
+    "browser",
+    "proxy"
+  ],
+  "author": "Shaw Hsu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shawxu/console-plus"
+  },
   "devDependencies": {
     "uglify-js": "^3.17.4"
   }

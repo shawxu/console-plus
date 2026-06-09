@@ -5,26 +5,39 @@ export default function (reportUrl, {
   cpRefer,
   extParams,
   clear = true } = {}) {
-    const [pTiming] = performance.getEntriesByType("navigation");
 
     let t, 
       buff, 
       s,
       o,
-      dataMap = new FormData();
+      dataMap;
 
-    if(pTiming.toJSON) {
-      dataMap.append("timing", JSON.stringify(pTiming.toJSON()));
+    // 兼容 Node.js 环境：优先用 FormData，不可用时用纯文本
+    if (typeof FormData !== "undefined") {
+      dataMap = new FormData();
+    } else {
+      dataMap = null;
+    }
+
+    // 尝试获取页面导航性能数据（浏览器环境）
+    if (typeof performance !== "undefined" && performance.getEntriesByType) {
+      const [pTiming] = performance.getEntriesByType("navigation");
+      if (pTiming && pTiming.toJSON && dataMap) {
+        dataMap.append("timing", JSON.stringify(pTiming.toJSON()));
+      }
     }
 
     buff = Array.from(logStorage[filter] || logEntries);
-    dataMap.append("log", buff.join('\n'));
+    const logBody = buff.join('\n');
 
-    if(t = extParams){
+    if (dataMap) {
+      dataMap.append("log", logBody);
+      if(t = extParams){
         for(let k in t){
-            if("log" == k.toLowerCase()) continue;
-            if("string" == typeof t[k]) dataMap.append(k, t[k]);
+          if("log" == k.toLowerCase()) continue;
+          if("string" == typeof t[k]) dataMap.append(k, t[k]);
         }
+      }
     }
 
     try {
@@ -32,6 +45,23 @@ export default function (reportUrl, {
     } catch(err) {
       cpRefer.error(`${err} \nconsole-plus: report: send: Invalid report URL string.`);
       return;
+    }
+
+    // 构建 body：优先 FormData，否则 JSON
+    let body;
+    let headers = {};
+    if (dataMap) {
+      body = dataMap;
+    } else {
+      headers["Content-Type"] = "application/json";
+      const payload = { log: logBody };
+      if (extParams) {
+        for (let k in extParams) {
+          if ("log" == k.toLowerCase()) continue;
+          payload[k] = extParams[k];
+        }
+      }
+      body = JSON.stringify(payload);
     }
 
     s = new AbortController();
@@ -45,12 +75,12 @@ export default function (reportUrl, {
       "priority": "low",
       "mode": "cors",
       "signal": s.signal,
-      "body": dataMap
+      "headers": headers,
+      "body": body
     }).then(resp => {
       return resp.json();
 
     }).then(dt => {
-      //cpRefer.info(JSON.stringify(dt));
       if(dt && dt.code === 0) {
         cpRefer.info(dt.msg);
         if(clear) {

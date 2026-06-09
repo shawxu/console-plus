@@ -76,7 +76,7 @@ cp.log('response OK', 'code 0');
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
 | `productName` | `'console-plus'` | 产品名称 |
-| `reportUrl` | `'https://shawxu.cn/log/'` | 上报接口地址 |
+| `reportUrl` | `''` (空，需自行配置) | 上报接口地址 |
 | `silentMode` | `false` | 静默模式（不上报到原生 console） |
 
 ```javascript

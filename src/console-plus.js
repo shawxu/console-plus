@@ -3,13 +3,8 @@
  * ESM module, no AMD/RequireJS required
  */
 
-const LOG_MAP = {
-    "debug": 1
-    , "error": 1
-    , "info": 1
-    , "log": 1
-    , "warn": 1
-  };
+const LOG_LEVELS = ["debug", "error", "info", "log", "warn"];
+const MAX_LOG_ENTRIES = 10000;
 
 let proto = {}
   , logEntries = []
@@ -27,25 +22,44 @@ let proto = {}
       , "warn":   []
     }
   , clearTimes = 0
-  , reportUrlCfg = "https://shawxu.cn/log/" //上报结果的接口URL，可配置
+  , reportUrlCfg = "" //上报结果的接口URL，可配置
+  , originalConsole = {}
   , injected = false
   , silent = false;
 
-for (let k in console) {
-  if (LOG_MAP[k] && "function" == typeof console[k]) {
+const now = (() => {
+  if (typeof performance !== "undefined" && performance.now) {
+    return () => performance.now().toFixed(3);
+  }
+  return () => Date.now().toString();
+})();
+
+const pushLog = (level, entry) => {
+  if (logEntries.length >= MAX_LOG_ENTRIES) {
+    logEntries.shift();
+  }
+  logEntries.push(entry);
+  if (logStorage[level] && logStorage[level].length >= MAX_LOG_ENTRIES) {
+    logStorage[level].shift();
+  }
+  logStorage[level].push(entry);
+};
+
+for (let k of LOG_LEVELS) {
+  if (console[k] && "function" == typeof console[k]) {
     let prxy = new Proxy(console[k], {
       apply (tgt, thisArg, argArr) {
         let t;
         logEntry[1] = k;
-        logEntry[2] = performance.now().toFixed(3); //小数点后3位够了
+        logEntry[2] = now();
         logEntry[3] = argArr.join(" ");
-        logEntries.push(t = logEntry.join("\t"));
-        logStorage[k].push(t);
+        t = logEntry.join("\t");
+        pushLog(k, t);
         if(!silent){
           if(!injected){
             tgt(...argArr);
           } else {
-            ("function" == typeof LOG_MAP[k]) && LOG_MAP[k](...argArr);
+            ("function" == typeof originalConsole[k]) && originalConsole[k](...argArr);
           }
         }
 
@@ -60,7 +74,6 @@ proto.config = ({ productName = logEntry[0], reportUrl = reportUrlCfg, silentMod
   if (productName && "string" == typeof productName) logEntry[0] = productName;
   if (reportUrl && "string" == typeof reportUrl) reportUrlCfg = reportUrl;
   silent = !!silentMode;
-  //TODO
 };
 
 proto.get = filter => {
@@ -76,7 +89,7 @@ proto.clear = clearConsole => {
 
   clearConsole && console.clear && console.clear();
 
-  proto.info("console-plus cleared, ", ++clearTimes, "times");
+  ++clearTimes;
 };
 
 proto.report = async ({
@@ -89,7 +102,6 @@ proto.report = async ({
   const sd = await import(componentUrl);
 
   sd.default(reportUrl, {
-    //"reportUrl":    reportUrl
     "filter":       filter
     , "extParams":  params
     , "clear":      clear
@@ -101,17 +113,15 @@ proto.report = async ({
 
 proto.inject = () => {
   if(!injected){
-    for (let k in LOG_MAP) {
+    for (let k of LOG_LEVELS) {
       if ("function" == typeof console[k]) {
-        LOG_MAP[k] = console[k]; //把老的引用存起来
+        originalConsole[k] = console[k]; //把老的引用存起来
         console[k] = proto[k]; //inject掉
       }
     }
     injected = true;
   }
 };
-
-proto.info(logEntry[0], "loaded, hello world!");
 
 export default proto;
 
