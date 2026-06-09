@@ -6,7 +6,7 @@
 const LOG_LEVELS = ["debug", "error", "info", "log", "warn"];
 const MAX_LOG_ENTRIES = 10000;
 
-let proto = {}
+const proto = {}
   , logEntries = []
   , logEntry = [
       "console-plus" //default product name
@@ -21,9 +21,9 @@ let proto = {}
       , "log":    []
       , "warn":   []
     }
-  , clearTimes = 0
-  , reportUrlCfg = "" //上报结果的接口URL，可配置
-  , originalConsole = {}
+  , originalConsole = {};
+
+let reportUrlCfg = "" //上报结果的接口URL，可配置
   , injected = false
   , silent = false;
 
@@ -45,15 +45,14 @@ const pushLog = (level, entry) => {
   logStorage[level].push(entry);
 };
 
-for (let k of LOG_LEVELS) {
+for (const k of LOG_LEVELS) {
   if (console[k] && "function" == typeof console[k]) {
-    let prxy = new Proxy(console[k], {
+    const prxy = new Proxy(console[k], {
       apply (tgt, thisArg, argArr) {
-        let t;
         logEntry[1] = k;
         logEntry[2] = now();
         logEntry[3] = argArr.join(" ");
-        t = logEntry.join("\t");
+        const t = logEntry.join("\t");
         pushLog(k, t);
         if(!silent){
           if(!injected){
@@ -77,19 +76,17 @@ proto.config = ({ productName = logEntry[0], reportUrl = reportUrlCfg, silentMod
 };
 
 proto.get = filter => {
-  let r = logStorage[filter] || logEntries;
+  const r = logStorage[filter] || logEntries;
   return r.join("\r\n");
 };
 
 proto.clear = clearConsole => {
-  logEntries = [];
-  for (let k in logStorage) {
-    logStorage[k] = [];
+  logEntries.length = 0;
+  for (const k in logStorage) {
+    logStorage[k].length = 0;
   }
 
   clearConsole && console.clear && console.clear();
-
-  ++clearTimes;
 };
 
 proto.report = async ({
@@ -113,7 +110,7 @@ proto.report = async ({
 
 proto.inject = () => {
   if(!injected){
-    for (let k of LOG_LEVELS) {
+    for (const k of LOG_LEVELS) {
       if ("function" == typeof console[k]) {
         originalConsole[k] = console[k]; //把老的引用存起来
         console[k] = proto[k]; //inject掉

@@ -7,9 +7,6 @@ export default function (reportUrl, {
   clear = true } = {}) {
 
     let t, 
-      buff, 
-      s,
-      o,
       dataMap;
 
     // 兼容 Node.js 环境：优先用 FormData，不可用时用纯文本
@@ -27,13 +24,14 @@ export default function (reportUrl, {
       }
     }
 
-    buff = Array.from(logStorage[filter] || logEntries);
+    const buff = Array.from(logStorage[filter] || logEntries);
     const logBody = buff.join('\n');
 
     if (dataMap) {
       dataMap.append("log", logBody);
-      if(t = extParams){
-        for(let k in t){
+      t = extParams;
+      if(t){
+        for(const k in t){
           if("log" == k.toLowerCase()) continue;
           if("string" == typeof t[k]) dataMap.append(k, t[k]);
         }
@@ -49,14 +47,14 @@ export default function (reportUrl, {
 
     // 构建 body：优先 FormData，否则 JSON
     let body;
-    let headers = {};
+    const headers = {};
     if (dataMap) {
       body = dataMap;
     } else {
       headers["Content-Type"] = "application/json";
       const payload = { log: logBody };
       if (extParams) {
-        for (let k in extParams) {
+        for (const k in extParams) {
           if ("log" == k.toLowerCase()) continue;
           payload[k] = extParams[k];
         }
@@ -64,8 +62,8 @@ export default function (reportUrl, {
       body = JSON.stringify(payload);
     }
 
-    s = new AbortController();
-    o = setTimeout(() => {
+    const s = new AbortController();
+    const o = setTimeout(() => {
       s.abort();
       cpRefer.error("console-plus: report: send: Fetch 3s timeout.");
     }, 3000);
@@ -92,4 +90,4 @@ export default function (reportUrl, {
     }).finally(() => {
       clearTimeout(o);
     });
-};
+}
