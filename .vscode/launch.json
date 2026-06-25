@@ -8,6 +8,9 @@
             "name": "Launch Chrome - file",
             "request": "launch",
             "type": "chrome",
+            "runtimeArgs": [
+                "--allow-file-access-from-files"
+            ],
             "file": "${file}"
         }
     ]
