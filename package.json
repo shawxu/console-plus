@@ -1,5 +1,74 @@
 {
+  "name": "console-plus",
+  "version": "2.1.0",
+  "description": "Web black box: capture console output in browsers and WebViews, persist a bounded snapshot locally, and report it through a pluggable reporter",
+  "type": "module",
+  "sideEffects": false,
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/console-plus.global.js",
+  "jsdelivr": "./dist/console-plus.global.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./reporters/http": {
+      "types": "./dist/reporters/http.d.ts",
+      "import": "./dist/reporters/http.js",
+      "default": "./dist/reporters/http.js"
+    },
+    "./browser": "./dist/console-plus.global.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "console",
+    "logger",
+    "log",
+    "debug",
+    "report",
+    "browser",
+    "webview",
+    "localstorage",
+    "proxy",
+    "diagnostics"
+  ],
+  "author": "Shaw Hsu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shawxu/console-plus"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "collector": "node scripts/collector.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run test",
+    "prepublishOnly": "npm run check && npm run build"
+  },
   "devDependencies": {
-    "uglify-js": "^3.17.4"
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^24.19.2",
+    "eslint": "^9.39.5",
+    "happy-dom": "^21.0.4",
+    "prettier": "^3.9.10",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^3.2.7"
   }
 }

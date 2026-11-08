@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>console-plus · 浏览器集成测试</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="../../dist/console-plus.global.js"></script>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1><span>console-plus</span> · 浏览器集成测试</h1>
+          <p class="sub">
+            纯静态页面，直接以 <code>file://</code> 打开即可。原生 console 拦截、localStorage
+            flush、 跨域 FormData 上报、脱敏、注入卸载与跨页面重载恢复，全部在真实浏览器 / WebView
+            里跑一遍。
+          </p>
+        </div>
+        <div class="badge" id="env-badge">initializing…</div>
+      </header>
+
+      <div class="toolbar">
+        <button class="primary" id="run">运行全部测试</button>
+        <button id="reload">模拟页面重载</button>
+        <button id="clear">清空状态</button>
+        <label class="url-field">
+          接收端
+          <input id="collector-url" value="http://127.0.0.1:4173/__collect" spellcheck="false" />
+        </label>
+      </div>
+
+      <div class="banner" id="banner"></div>
+
+      <div class="summary">
+        <strong id="summary-text">尚未运行</strong>
+        <div class="counts">
+          <span class="ok" id="count-ok">0 通过</span>
+          <span class="bad" id="count-bad">0 失败</span>
+          <span id="count-all">0 总计</span>
+        </div>
+        <div class="bar"><i id="progress"></i></div>
+      </div>
+
+      <div class="grid">
+        <section class="card">
+          <h2>测试用例</h2>
+          <ul id="results"></ul>
+        </section>
+
+        <aside class="card">
+          <h2>实时状态</h2>
+          <div class="stats">
+            <div class="stat"><span>内存记录</span><b id="stat-memory">0</b></div>
+            <div class="stat"><span>本地待上报批次</span><b id="stat-batches">0</b></div>
+            <div class="stat"><span>服务端已接收</span><b id="stat-server">0</b></div>
+            <div class="stat"><span>持久化可用</span><b id="stat-persisted">-</b></div>
+            <div class="stat"><span>console 已注入</span><b id="stat-injected">-</b></div>
+            <div class="stat"><span>IIFE 全局产物</span><b id="stat-iife">-</b></div>
+          </div>
+          <div class="note">
+            上报跨域提交到独立接收服务（CORS 允许任意 Origin），地址可在上方修改，也可用
+            <code>?collector=</code> 覆盖。服务端返回 <code>{ code: 0 }</code>；加
+            <code>?fail=1</code> 模拟拒绝。
+            <ol id="server-items"></ol>
+          </div>
+        </aside>
+      </div>
+
+      <footer>
+        启动方式：VS Code 按 <code>F5</code> 选择「console-plus ·
+        一键集成测试」（同时启动接收服务并在调试器打开本页）； 或先运行
+        <code>npm run build &amp;&amp; npm run collector</code>，再直接双击本 HTML 打开。
+        本页不依赖任何静态服务器，脚本均通过普通 <code>&lt;script&gt;</code> 标签加载。
+      </footer>
+    </div>
+    <script src="./harness.js"></script>
+  </body>
+</html>

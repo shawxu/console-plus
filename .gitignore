@@ -1,8 +1,9 @@
 .DS_Store
 ._.DS_Store
-
-.project
-package-lock.json
 *.log
 
 /node_modules
+/dist
+/coverage
+
+.vscode/

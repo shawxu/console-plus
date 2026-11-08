@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>console-plus browser / WebView example</title>
+  </head>
+  <body>
+    <pre id="out">loading...</pre>
+    <script type="module">
+      // 先执行 npm run build
+      import { createWebConsolePlus, LocalLogStore } from "../dist/index.js";
+
+      const cp = createWebConsolePlus({
+        productName: "webview-demo",
+        maxEntries: 2000,
+        persistence: {
+          flushThreshold: 5,
+          flushIntervalMs: 3000,
+          watchPageHide: true,
+          maxBytes: 256 * 1024,
+        },
+      });
+      cp.inject();
+
+      cp.info("page ready");
+      console.warn("原生 console.warn 也会被收集");
+      console.log("payload", { uid: 42 }, Symbol("safe"));
+
+      document.querySelector("#out").textContent = [
+        cp.get(),
+        "",
+        `persisted=${cp.persisted}`,
+        `local batches=${new LocalLogStore().read().length}`,
+      ].join("\n");
+
+      // 自定义上报通道；WebView 里可换成 JS Bridge
+      cp.setReporter({
+        async send(batch) {
+          console.info("[reporter]", batch.count, "records", batch.text.length, "bytes");
+          return { ok: true, sent: batch.count, attempts: 1 };
+        },
+      });
+
+      window.cp = cp; // 便于在控制台试 cp.flush() / cp.report() / cp.restore()
+    </script>
+  </body>
+</html>

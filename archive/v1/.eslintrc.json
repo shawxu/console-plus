@@ -1,0 +1,25 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-console": "off",
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-undef": "error",
+    "no-var": "warn",
+    "prefer-const": "warn"
+  },
+  "globals": {
+    "FormData": "readonly",
+    "AbortController": "readonly",
+    "performance": "readonly",
+    "fetch": "readonly"
+  }
+}
