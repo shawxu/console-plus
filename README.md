@@ -195,7 +195,7 @@ const cp2 = createWebConsolePlus({
 
 ## 浏览器集成测试页（纯静态）
 
-`tests/browser/index.html` 是**纯静态 HTML**：所有脚本都用普通 `<script>` 标签加载（`dist/console-plus.global.js` + `harness.js`），可以直接以 `file://` 双击打开，不需要任何静态服务器。页面加载后自动执行 11 个用例，实时展示 PASS/FAIL、耗时、内存条数、本地待上报批次与接收服务次数。
+`tests/browser/index.html` 是**纯静态 HTML**：所有脚本都用普通 `<script>` 标签加载（`dist/console-plus.global.js` + `harness.js`），样式外置到同目录的 `style.css`，都走相对路径，可以直接以 `file://` 双击打开，不需要任何静态服务器。页面加载后自动执行 11 个用例，实时展示 PASS/FAIL、耗时、内存条数、本地待上报批次与接收服务次数。
 
 ### 一键启动（VS Code）
 
