@@ -178,6 +178,8 @@ export class ConsolePlus {
   clear(options?: ClearOptions | boolean): void {
     this.#buffer.clear();
     this.#persistence?.store.clear();
+    // 队列已空，未持久化计数归零，否则 clear 后第一条日志就会误触发阈值 flush
+    this.#lastFlushedSeq = this.#seq;
     const clearConsole = typeof options === "boolean" ? options : (options?.console ?? false);
     if (clearConsole && !this.#config.silentMode) {
       try {

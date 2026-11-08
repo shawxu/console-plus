@@ -193,6 +193,19 @@ describe("flush 触发器", () => {
     expect(new LocalLogStore().read()).toEqual([]);
   });
 
+  it("clear 之后条数阈值重新计数", () => {
+    const cp = make({ flushThreshold: 3 });
+    cp.info("a");
+    cp.info("b");
+    expect(new LocalLogStore().read()).toHaveLength(0);
+    cp.clear();
+    cp.info("c");
+    expect(new LocalLogStore().read()).toHaveLength(0);
+    cp.info("d");
+    cp.info("e");
+    expect(new LocalLogStore().read()[0]?.records).toHaveLength(3);
+  });
+
   it("dispose 会卸载定时器与页面监听", () => {
     const cp = make({ watchPageHide: true });
     cp.info("before dispose");

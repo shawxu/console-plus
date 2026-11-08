@@ -16,6 +16,9 @@
 - 三类 flush 触发：未持久化日志达到 `flushThreshold` 条、距上次 flush 超过 `flushIntervalMs`、`pagehide` / `visibilitychange(hidden)`。
 - `cp.flush()` 可手动触发；`cp.report()` 优先回传本地遗留批次，成功后按 seq 精确删除，失败保留待下次重试。
 - `persistence` 默认关闭（写用户本地存储需显式开启），`createWebConsolePlus()` 一键启用 web 推荐配置。
+- 浏览器集成测试页改为**纯静态 HTML**（IIFE 普通脚本 + `file://` 直开），Node 端收窄为仅 CORS 接收服务 `npm run collector`；`.vscode/launch.json` 提供一键 F5 调试（同时启动接收服务并打开页面）。
+- 修复 `clear()` 后未持久化计数虚高，导致清空队列后第一条日志误触发阈值 flush。
+- 修复 `validateReportUrl()` 拒绝同源相对路径（如 `/collect`）；浏览器集成页首次运行即暴露该问题。
 
 ### 修复
 

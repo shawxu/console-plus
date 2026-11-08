@@ -49,6 +49,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "collector": "node scripts/collector.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

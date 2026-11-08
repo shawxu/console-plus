@@ -1,15 +1,48 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Launch Chrome - file",
-            "request": "launch",
-            "type": "chrome",
-        //    "file": "${workspaceFolder}/${relativeFile}",
-            "file": "${file}",
-            "runtimeArgs": [
-                "--allow-file-access-from-files"
-            ]
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "console-plus · 启动接收服务 (CORS)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/collector.mjs",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "PORT": "4173"
+      }
+    },
+    {
+      "name": "console-plus · 打开集成测试页 (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "file": "${workspaceFolder}/tests/browser/index.html",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "runtimeArgs": [
+        "--allow-file-access-from-files"
+      ]
+    },
+    {
+      "name": "打开当前 HTML 文件 (file://)",
+      "type": "chrome",
+      "request": "launch",
+      "file": "${file}",
+      "webRoot": "${workspaceFolder}",
+      "runtimeArgs": [
+        "--allow-file-access-from-files"
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "console-plus · 一键集成测试",
+      "configurations": [
+        "console-plus · 启动接收服务 (CORS)",
+        "console-plus · 打开集成测试页 (Chrome)"
+      ],
+      "stopAll": true
+    }
+  ]
 }

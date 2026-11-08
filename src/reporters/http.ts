@@ -46,7 +46,9 @@ export function validateReportUrl(raw: string): string {
   }
   let parsed: URL;
   try {
-    parsed = new URL(raw);
+    // 浏览器里同源相对路径（如 /collect）很常见，用当前页面地址作 base 解析
+    const base = typeof window !== "undefined" ? window.location.href : undefined;
+    parsed = new URL(raw, base);
   } catch {
     throw new TypeError(`[console-plus] Invalid reportUrl: ${raw}`);
   }

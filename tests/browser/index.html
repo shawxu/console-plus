@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>console-plus · 浏览器集成测试</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0d1016;
+        --panel: #161a22;
+        --panel-2: #1c212b;
+        --line: #2a3140;
+        --text: #e6eaf2;
+        --muted: #8b95a8;
+        --accent: #5eead4;
+        --pass: #34d399;
+        --fail: #f87171;
+        --warn: #fbbf24;
+        --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: radial-gradient(1200px 600px at 20% -10%, #17212e 0%, var(--bg) 60%);
+        color: var(--text);
+        font:
+          14px/1.6 -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          "PingFang SC",
+          sans-serif;
+        min-height: 100vh;
+      }
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 32px 24px 64px;
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 26px;
+        letter-spacing: -0.02em;
+      }
+      h1 span {
+        color: var(--accent);
+        font-family: var(--mono);
+      }
+      .sub {
+        color: var(--muted);
+        margin: 6px 0 0;
+        max-width: 720px;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel);
+        color: var(--muted);
+        font: 12px var(--mono);
+      }
+      .badge::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 10px var(--accent);
+      }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+      button {
+        appearance: none;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        padding: 9px 16px;
+        background: var(--panel-2);
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.15s ease;
+      }
+      button:hover:not(:disabled) {
+        border-color: var(--accent);
+        transform: translateY(-1px);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: wait;
+      }
+      button.primary {
+        background: var(--accent);
+        color: #062522;
+        border-color: var(--accent);
+      }
+      .url-field {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 12px 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: var(--panel-2);
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .url-field input {
+        width: 330px;
+        padding: 9px 0;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        font: 12px var(--mono);
+      }
+      .url-field:focus-within {
+        border-color: var(--accent);
+      }
+      @media (max-width: 860px) {
+        .url-field {
+          width: 100%;
+        }
+        .url-field input {
+          width: 100%;
+        }
+      }
+      .banner {
+        display: none;
+        padding: 12px 16px;
+        margin-bottom: 18px;
+        border-radius: 9px;
+        border: 1px solid rgba(251, 191, 36, 0.4);
+        background: rgba(251, 191, 36, 0.08);
+        color: var(--warn);
+        font-size: 13px;
+      }
+      .banner.show {
+        display: block;
+      }
+      .summary {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+        padding: 14px 18px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--panel);
+        margin-bottom: 20px;
+      }
+      .summary strong {
+        font: 600 18px var(--mono);
+      }
+      .counts {
+        display: flex;
+        gap: 18px;
+        font: 13px var(--mono);
+      }
+      .counts .ok {
+        color: var(--pass);
+      }
+      .counts .bad {
+        color: var(--fail);
+      }
+      .bar {
+        flex: 1 1 200px;
+        height: 6px;
+        border-radius: 99px;
+        background: var(--panel-2);
+        overflow: hidden;
+      }
+      .bar > i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: var(--pass);
+        transition: width 0.3s ease;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) minmax(260px, 1fr);
+        gap: 20px;
+      }
+      @media (max-width: 860px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--panel);
+        overflow: hidden;
+      }
+      .card > h2 {
+        margin: 0;
+        padding: 13px 18px;
+        font-size: 13px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-bottom: 1px solid var(--line);
+        background: var(--panel-2);
+      }
+      #results {
+        list-style: none;
+        margin: 0;
+        padding: 8px;
+        max-height: 620px;
+        overflow: auto;
+      }
+      #results li {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 11px 12px;
+        border-radius: 8px;
+      }
+      #results li + li {
+        border-top: 1px solid rgba(42, 49, 64, 0.6);
+      }
+      .tag {
+        flex: none;
+        width: 52px;
+        text-align: center;
+        padding: 2px 0;
+        border-radius: 5px;
+        font: 700 11px var(--mono);
+        letter-spacing: 0.05em;
+      }
+      .tag.ok {
+        color: var(--pass);
+        background: rgba(52, 211, 153, 0.12);
+      }
+      .tag.bad {
+        color: var(--fail);
+        background: rgba(248, 113, 113, 0.12);
+      }
+      .case {
+        min-width: 0;
+        flex: 1;
+      }
+      .case b {
+        font-weight: 600;
+      }
+      .case p {
+        margin: 3px 0 0;
+        color: var(--muted);
+        font: 12px/1.5 var(--mono);
+        word-break: break-word;
+      }
+      .ms {
+        flex: none;
+        color: var(--muted);
+        font: 11px var(--mono);
+        padding-top: 3px;
+      }
+      .stats {
+        padding: 8px 18px 16px;
+      }
+      .stat {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 9px 0;
+        border-bottom: 1px solid rgba(42, 49, 64, 0.6);
+      }
+      .stat:last-child {
+        border-bottom: 0;
+      }
+      .stat span {
+        color: var(--muted);
+      }
+      .stat b {
+        font: 600 13px var(--mono);
+      }
+      .note {
+        padding: 14px 18px;
+        color: var(--muted);
+        font-size: 12.5px;
+        border-top: 1px solid var(--line);
+      }
+      .note code {
+        color: var(--accent);
+        font-family: var(--mono);
+      }
+      #server-items {
+        margin: 8px 0 0;
+        padding: 0 0 0 16px;
+        font: 11px/1.7 var(--mono);
+        color: var(--muted);
+      }
+      footer {
+        margin-top: 22px;
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      footer code {
+        color: var(--accent);
+        font-family: var(--mono);
+      }
+    </style>
+    <script src="../../dist/console-plus.global.js"></script>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1><span>console-plus</span> · 浏览器集成测试</h1>
+          <p class="sub">
+            纯静态页面，直接以 <code>file://</code> 打开即可。原生 console 拦截、localStorage
+            flush、 跨域 FormData 上报、脱敏、注入卸载与跨页面重载恢复，全部在真实浏览器 / WebView
+            里跑一遍。
+          </p>
+        </div>
+        <div class="badge" id="env-badge">initializing…</div>
+      </header>
+
+      <div class="toolbar">
+        <button class="primary" id="run">运行全部测试</button>
+        <button id="reload">模拟页面重载</button>
+        <button id="clear">清空状态</button>
+        <label class="url-field">
+          接收端
+          <input id="collector-url" value="http://127.0.0.1:4173/__collect" spellcheck="false" />
+        </label>
+      </div>
+
+      <div class="banner" id="banner"></div>
+
+      <div class="summary">
+        <strong id="summary-text">尚未运行</strong>
+        <div class="counts">
+          <span class="ok" id="count-ok">0 通过</span>
+          <span class="bad" id="count-bad">0 失败</span>
+          <span id="count-all">0 总计</span>
+        </div>
+        <div class="bar"><i id="progress"></i></div>
+      </div>
+
+      <div class="grid">
+        <section class="card">
+          <h2>测试用例</h2>
+          <ul id="results"></ul>
+        </section>
+
+        <aside class="card">
+          <h2>实时状态</h2>
+          <div class="stats">
+            <div class="stat"><span>内存记录</span><b id="stat-memory">0</b></div>
+            <div class="stat"><span>本地待上报批次</span><b id="stat-batches">0</b></div>
+            <div class="stat"><span>服务端已接收</span><b id="stat-server">0</b></div>
+            <div class="stat"><span>持久化可用</span><b id="stat-persisted">-</b></div>
+            <div class="stat"><span>console 已注入</span><b id="stat-injected">-</b></div>
+            <div class="stat"><span>IIFE 全局产物</span><b id="stat-iife">-</b></div>
+          </div>
+          <div class="note">
+            上报跨域提交到独立接收服务（CORS 允许任意 Origin），地址可在上方修改，也可用
+            <code>?collector=</code> 覆盖。服务端返回 <code>{ code: 0 }</code>；加
+            <code>?fail=1</code> 模拟拒绝。
+            <ol id="server-items"></ol>
+          </div>
+        </aside>
+      </div>
+
+      <footer>
+        启动方式：VS Code 按 <code>F5</code> 选择「console-plus ·
+        一键集成测试」（同时启动接收服务并在调试器打开本页）； 或先运行
+        <code>npm run build &amp;&amp; npm run collector</code>，再直接双击本 HTML 打开。
+        本页不依赖任何静态服务器，脚本均通过普通 <code>&lt;script&gt;</code> 标签加载。
+      </footer>
+    </div>
+    <script src="./harness.js"></script>
+  </body>
+</html>

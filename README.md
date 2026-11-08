@@ -64,17 +64,17 @@ if (!result.ok) console.warn("上报失败，本地批次会保留待下次重�
 
 `createWebConsolePlus(options)`、`createConsolePlus(options)` 与 `cp.config(patch)` 接受同一组基础字段；`config()` 只更新传入的字段。
 
-| 字段          | 默认值           | 说明                                                   |
-| ------------- | ---------------- | ------------------------------------------------------ |
-| `productName` | `"console-plus"` | 每条日志的产品列                                       |
-| `maxEntries`  | `10000`          | 内存快照容量，正整数；WebView 内存紧张时建议 2000–5000 |
-| `silentMode`  | `false`          | `true` 时仍收集，但不输出到原生 console                |
-| `reportUrl`   | `""`             | 上报地址，仅允许 http/https；设置后自动创建内置上报器  |
-| `reporter`    | —                | 自定义 `Reporter`，优先级高于 `reportUrl`              |
-| `redact`      | `true`           | 上报前脱敏；`false` 关闭，传函数可自定义               |
-| `autoInject`  | `false`          | 构造时立即注入（默认惰性）                             |
-| `persistence` | 见下             | `false` / `true` / 配置对象                            |
-| `clock`       | 自动             | 注入时钟，便于测试                                     |
+| 字段          | 默认值           | 说明                                                           |
+| ------------- | ---------------- | -------------------------------------------------------------- |
+| `productName` | `"console-plus"` | 每条日志的产品列                                               |
+| `maxEntries`  | `10000`          | 内存快照容量，正整数；WebView 内存紧张时建议 2000–5000         |
+| `silentMode`  | `false`          | `true` 时仍收集，但不输出到原生 console                        |
+| `reportUrl`   | `""`             | 上报地址，支持同源相对路径（如 `/collect`），仅允许 http/https |
+| `reporter`    | —                | 自定义 `Reporter`，优先级高于 `reportUrl`                      |
+| `redact`      | `true`           | 上报前脱敏；`false` 关闭，传函数可自定义                       |
+| `autoInject`  | `false`          | 构造时立即注入（默认惰性）                                     |
+| `persistence` | 见下             | `false` / `true` / 配置对象                                    |
+| `clock`       | 自动             | 注入时钟，便于测试                                             |
 
 ### persistence 配置
 
@@ -192,6 +192,31 @@ const cp2 = createWebConsolePlus({
 ## 从 v1 迁移
 
 旧版文件完整保留在 `archive/v1/`。v1 的 `componentUrl` 动态导入、手写 `.d.ts`、`silent`、`extParams`、双队列、`\r\n` 分隔、不可逆 `inject()` 均已移除；对应替代为 `Reporter` 接口、构建生成的 `.d.ts`、`silentMode`、`params`、单一环形缓冲、统一 `\n`、`restore()`。
+
+## 浏览器集成测试页（纯静态）
+
+`tests/browser/index.html` 是**纯静态 HTML**：所有脚本都用普通 `<script>` 标签加载（`dist/console-plus.global.js` + `harness.js`），可以直接以 `file://` 双击打开，不需要任何静态服务器。页面加载后自动执行 11 个用例，实时展示 PASS/FAIL、耗时、内存条数、本地待上报批次与接收服务次数。
+
+### 一键启动（VS Code）
+
+按 `F5` 选择「**console-plus · 一键集成测试**」compound 配置：同时启动 `scripts/collector.mjs`（Node 接收服务）并在调试器里打开静态页，配合 source map 可直接给 `src/*.ts` 打断点。`.vscode/launch.json` 另外提供接收服务单独启动配置，以及打开当前 HTML 文件的通用配置。
+
+手动方式：
+
+```bash
+npm run build
+npm run collector
+```
+
+然后双击 `tests/browser/index.html`（或交给任意静态托管 / Live Server）。
+
+### 接收服务只做接收
+
+`npm run collector` 不提供任何页面资源，只在 `http://127.0.0.1:4173/__collect` 接收上报，并带完整 CORS 头：回显请求 `Origin`（无 `Origin` 时回退 `*`）+ `Vary: Origin`，OPTIONS 预检同样回显，并带 `Access-Control-Allow-Private-Network: true`，因此 `file://`（`Origin: null`）或任意本地域页面都能跨域提交，也满足 Chrome PNA 预检对精确 `Origin` 的要求。GET 返回最近接收记录，POST 返回 `{ code: 0 }`，加 `?fail=1` 返回 `{ code: 500 }` 模拟拒绝。页面顶部的「接收端」输入框可改地址，也可用 `?collector=` 覆盖；服务未启动会在页面上给出提示。
+
+覆盖：原生 `console.*` 零侵入拦截（Symbol / 循环引用 / BigInt）、结构化记录与分级视图、非法级别防护、条数阈值 flush、`pagehide` 与 `visibilitychange(hidden)` flush、跨域 FormData 上报与队列清理、脱敏只作用于上报数据、失败批次保留、`restore()` 不覆盖其他 SDK 的包装、IIFE 全局产物。
+
+点「模拟页面重载」会**真实刷新页面**：先把一条日志 flush 进 localStorage，重载后的新页面自动读取遗留批次并回传，用来验证跨页面生命周期的现场恢复。
 
 ## 开发
 

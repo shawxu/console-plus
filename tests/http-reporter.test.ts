@@ -32,9 +32,9 @@ afterEach(() => {
 });
 
 describe("validateReportUrl", () => {
-  it("拒绝空值、非法字符串与非 http(s) 协议", () => {
+  it("拒绝空值、非法 URL 与非 http(s) 协议", () => {
     expect(() => validateReportUrl("")).toThrow(TypeError);
-    expect(() => validateReportUrl("not a url")).toThrow(TypeError);
+    expect(() => validateReportUrl("http://")).toThrow(TypeError);
     expect(() => validateReportUrl("javascript:alert(1)")).toThrow(/protocol/i);
     expect(() => validateReportUrl("ftp://example.com/log")).toThrow(/protocol/i);
   });
@@ -42,6 +42,12 @@ describe("validateReportUrl", () => {
   it("接受 http/https", () => {
     expect(validateReportUrl("https://example.com/log")).toContain("https://example.com/log");
     expect(validateReportUrl("http://localhost:3000/log")).toContain("http://localhost");
+  });
+
+  it("接受同源相对路径", () => {
+    expect(validateReportUrl("/__collect")).toContain("/__collect");
+    expect(validateReportUrl("__collect?fail=1")).toContain("__collect?fail=1");
+    expect(() => validateReportUrl("javascript:alert(1)")).toThrow(/protocol/i);
   });
 });
 

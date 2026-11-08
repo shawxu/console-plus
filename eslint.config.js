@@ -10,6 +10,11 @@ export default tseslint.config(
     languageOptions: { globals: { console: "readonly" } },
   },
   {
+    // 浏览器集成页与本地预览脚本由各自运行时提供全局，不参与 TS 类型检查
+    files: ["tests/browser/**/*.js", "scripts/**/*.mjs"],
+    rules: { "no-undef": "off" },
+  },
+  {
     files: ["**/*.ts"],
     rules: {
       "no-undef": "off",
